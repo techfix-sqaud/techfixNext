@@ -1,7 +1,4 @@
-export const metadata = {
-  title: "Reset Password - Open PRO",
-  description: "Page description",
-};
+"use clinet";
 
 import Link from "next/link";
 
@@ -14,7 +11,7 @@ export default function ResetPassword() {
           <div className="max-w-3xl mx-auto text-center pb-12 md:pb-20">
             <h1 className="h1 mb-4">Forgot your password?</h1>
             <p className="text-xl text-gray-400">
-              We'll email you instructions on how to reset it.
+              We will email you instructions on how to reset it.
             </p>
           </div>
 
