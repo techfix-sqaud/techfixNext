@@ -1,6 +1,8 @@
+import Header from "@/components/UI/headerandfooter/header";
 import "./css/style.css";
 
 import { Inter, Architects_Daughter } from "next/font/google";
+import Footer from "@/components/UI/headerandfooter/footer";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -17,7 +19,7 @@ const architects_daughter = Architects_Daughter({
 
 export const metadata = {
   title: "techfix",
-  description: "techfix",
+  description: "Techfix ",
 };
 
 export default function RootLayout({
@@ -31,7 +33,9 @@ export default function RootLayout({
         className={`${inter.variable} ${architects_daughter.variable} font-inter antialiased bg-gray-900 text-gray-200 tracking-tight`}
       >
         <div className="flex flex-col min-h-screen overflow-hidden">
+          <Header />
           {children}
+          <Footer />
         </div>
       </body>
     </html>

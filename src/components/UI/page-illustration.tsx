@@ -29,22 +29,22 @@ export default function PageIllustration() {
         </defs>
         <path
           d="M20 280C40 230 100 180 200 160C300 140 350 210 450 190C550 170 600 100 720 60"
-          stroke="#ab21a4"
+          stroke="gray"
           stroke-width="2"
         />
         <path
           d="M0 300C50 250 150 220 250 240C350 260 400 190 500 210C600 230 700 200 750 180"
-          stroke="#ab21a4"
+          stroke="gray"
           stroke-width="2"
         />
         <path
           d="M30 270C60 210 130 170 230 150C330 130 380 200 480 180C580 160 630 90 750 50"
-          stroke="#ab21a4"
+          stroke="blue"
           stroke-width="2"
         />
         <path
           d="M10 290C70 240 120 180 210 190C300 200 370 220 470 200C570 180 630 160 740 130"
-          stroke="#ab21a4"
+          stroke="blue"
           stroke-width="2"
         />
       </svg>
