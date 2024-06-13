@@ -16,12 +16,14 @@ const TrackModal: React.FC<TrackModalProps> = (props) => {
 
   const TrackOrder = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+
     try {
       setLoading(true);
       const orderStatusRes = await TechFixAPI.get(
         `Order/status?orderNumber=${orderNumber}`
       );
       setOrderStatus(orderStatusRes.data.order_Status);
+      setErrorMessage("");
       switch (orderStatusRes.data.order_Status) {
         case "Picked up":
           setPercentage(100);
