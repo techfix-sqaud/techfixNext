@@ -1,3 +1,4 @@
+import FAQ from "@/components/UI/FAQ";
 import Features from "@/components/UI/features";
 import Hero from "@/components/UI/hero";
 import Newsletter from "@/components/UI/newsletter";
@@ -9,6 +10,7 @@ export default function Home() {
       <Hero />
       <Features />
       <Zigzag />
+      <FAQ />
       <Newsletter />
     </>
   );

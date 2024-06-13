@@ -120,7 +120,7 @@ export default function Footer() {
                       href="/"
                       className="text-gray-400 hover:text-gray-100 transition duration-150 ease-in-out"
                     >
-                      Nostrud exercitation
+                      TechFix && Education
                     </Link>
                   </li>
                   <li className="mb-1">
@@ -128,31 +128,7 @@ export default function Footer() {
                       href="/"
                       className="text-gray-400 hover:text-gray-100 transition duration-150 ease-in-out"
                     >
-                      Visual mockups
-                    </Link>
-                  </li>
-                  <li className="mb-1">
-                    <Link
-                      href="/"
-                      className="text-gray-400 hover:text-gray-100 transition duration-150 ease-in-out"
-                    >
-                      Nostrud exercitation
-                    </Link>
-                  </li>
-                  <li className="mb-1">
-                    <Link
-                      href="/"
-                      className="text-gray-400 hover:text-gray-100 transition duration-150 ease-in-out"
-                    >
-                      Visual mockups
-                    </Link>
-                  </li>
-                  <li className="mb-1">
-                    <Link
-                      href="/"
-                      className="text-gray-400 hover:text-gray-100 transition duration-150 ease-in-out"
-                    >
-                      Nostrud exercitation
+                      TechFix & Business
                     </Link>
                   </li>
                 </ul>
