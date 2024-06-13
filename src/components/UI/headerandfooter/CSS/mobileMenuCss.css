@@ -1,0 +1,69 @@
+/* Ensure the list items stack vertically */
+#mobile-nav ul {
+  display: flex;
+  flex-direction: column;
+  padding-left: 0; /* Removes default list padding */
+}
+
+#mobile-nav li {
+  width: 100%; /* Ensure list items take full width */
+  margin: 0; /* Remove default margin */
+  padding: 0; /* Remove default padding */
+}
+
+#mobile-nav a {
+  display: block;
+  width: 100%; /* Ensure links take full width */
+  padding: 0.75rem 1rem; /* Add padding for better touch targets */
+  color: #ffffff; /* Ensure text color is readable */
+}
+
+#mobile-nav a:hover {
+  background-color: #4a5568; /* Add a hover effect for better UX */
+}
+
+/* Styles for the dropdown button */
+#mobile-nav button {
+  padding: 0.75rem 1rem; /* Add padding for better touch targets */
+  color: #ffffff; /* Ensure text color is readable */
+  background: none; /* Remove default button background */
+  border: none; /* Remove default button border */
+  text-align: left; /* Align text to the left */
+  cursor: pointer; /* Change cursor to pointer */
+}
+
+#mobile-nav button:hover {
+  background-color: #4a5568; /* Add a hover effect for better UX */
+}
+
+/* Styles for the dropdown arrow */
+#mobile-nav svg {
+  transition: transform 0.2s ease; /* Smooth rotation transition */
+}
+
+#mobile-nav ul ul {
+  overflow: hidden;
+  transition: max-height 0.3s ease; /* Smooth max-height transition */
+}
+
+#mobile-nav ul ul.max-h-0 {
+  max-height: 0; /* Ensure collapsed state is hidden */
+}
+
+#mobile-nav ul ul.max-h-screen {
+  max-height: 500px; /* Ensure expanded state is visible, adjust as needed */
+}
+#mobile-nav  nav ul li ul li .block {
+  display: block;
+  padding: 8px 16px;
+  width: 100%;
+  color: #4b5563;
+  transition: background-color 0.15s ease-in-out;
+}
+
+#mobile-nav  nav ul li ul li .block:hover {
+  /* background-color: gray;
+  color: white; */
+  background-color: red;
+  width: 100%
+}

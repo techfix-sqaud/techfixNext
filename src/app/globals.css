@@ -1,0 +1,17 @@
+iframe {
+    display: block;
+    height: 100vh;
+    width: 100vw;
+    border: none;
+    margin-top: 5%;
+  }
+  @media (max-width: 768px) {
+    iframe {
+      margin-top: 15%; /* Adjusted margin top for mobile devices */
+    }
+  }
+
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
