@@ -3,13 +3,8 @@ import Alert from "@/components/helpers/Alert";
 import ProgressBar from "@/components/helpers/PrograssBar";
 import TechFixAPI from "@/components/helpers/techfixAPI";
 import React, { useState } from "react";
-import { AiFillCloseCircle } from "react-icons/ai";
 
-interface TrackModalProps {
-  onHide: () => void;
-}
-
-const TrackModal: React.FC<TrackModalProps> = (props) => {
+const TrackModal = () => {
   const [percentage, setPercentage] = useState<number>();
   const [orderStatus, setOrderStatus] = useState<string>("");
   const [orderNumber, setOrderNumber] = useState<string>("");

@@ -128,12 +128,15 @@ export default function MobileMenu() {
               </div>
               {link.dropdown && activeDropdown === index && (
                 <li
-                  key={index}
+                  key={`dropdown-${index}`}
                   className="relative group"
                   style={{ marginLeft: "3%" }}
                 >
                   {link.dropdown.map((dropdownLink, i) => (
-                    <div className="flex justify-between items-center">
+                    <div
+                      key={`dropdown-${index}-${i}`}
+                      className="flex justify-between items-center"
+                    >
                       <Link
                         href={dropdownLink.href}
                         className="font-medium flex-grow py-2"

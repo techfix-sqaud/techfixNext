@@ -39,7 +39,7 @@ export default function Features() {
               </svg>
               <h4 className="h4 mb-2">Water Damage Repair</h4>
               <p className="text-lg text-gray-400 text-center">
-                Accidentally dropped your phone in water? Don’t worry! Our
+                Accidentally dropped your phone in water? Don&apos;t worry! Our
                 specialized water damage repair service can rescue your device.
                 We use advanced techniques to diagnose and repair water-damaged
                 phones, bringing them back to life.
@@ -103,10 +103,10 @@ export default function Features() {
               </svg>
               <h4 className="h4 mb-2">Battery Replacement</h4>
               <p className="text-lg text-gray-400 text-center">
-                Is your phone's battery draining too quickly? We provide quick
-                and affordable battery replacement services to ensure your phone
-                lasts all day. Our high-quality batteries are guaranteed to
-                improve your device's performance and longevity.
+                Is your phone&apos;s battery draining too quickly? We provide
+                quick and affordable battery replacement services to ensure your
+                phone lasts all day. Our high-quality batteries are guaranteed
+                to improve your device&apos;s performance and longevity.
               </p>
             </div>
 
@@ -143,7 +143,6 @@ export default function Features() {
                 Say goodbye to the frustration of a malfunctioning charger.
               </p>
             </div>
-
             {/* 5th item */}
             <div
               className="relative flex flex-col items-center"
@@ -172,10 +171,10 @@ export default function Features() {
               <h4 className="h4 mb-2">Camera Repair</h4>
               <p className="text-lg text-gray-400 text-center">
                 Capture your moments clearly again with our camera repair
-                services. Whether your phone’s camera is blurry, not focusing,
-                or completely broken, we can restore it to its original
-                condition. Get back to taking stunning photos and videos in no
-                time.
+                services. Whether your phone&apos;s camera is blurry, not
+                focusing, or completely broken, we can restore it to its
+                original condition. Get back to taking stunning photos and
+                videos in no time.
               </p>
             </div>
 
@@ -209,7 +208,7 @@ export default function Features() {
                 Is your phone experiencing software issues like slow
                 performance, crashes, or unresponsive apps? Our experts provide
                 comprehensive software troubleshooting to resolve any problems
-                and optimize your phone's performance.
+                and optimize your phone&apos;s performance.
               </p>
             </div>
           </div>
