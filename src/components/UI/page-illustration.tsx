@@ -8,7 +8,7 @@ export default function PageIllustration() {
 
   return (
     <div
-      className="relative max-w-6xl mx-auto h-0 pointer-events-none"
+      className="relative max-w-6xl mx-auto h-0 -ml-20 hidden lg:block pointer-events-none"
       aria-hidden="true"
     >
       <svg

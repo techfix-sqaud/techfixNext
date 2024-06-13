@@ -1,4 +1,6 @@
 "use client";
+import Alert from "@/components/helpers/Alert";
+import ProgressBar from "@/components/helpers/PrograssBar";
 import TechFixAPI from "@/components/helpers/techfixAPI";
 import React, { useState } from "react";
 import { AiFillCloseCircle } from "react-icons/ai";
@@ -73,20 +75,10 @@ const TrackModal: React.FC<TrackModalProps> = (props) => {
           </div>
           <div className="max-w-sm mx-auto">
             <form onSubmit={TrackOrder}>
-              {errorMessage && (
-                <div className="mb-4">
-                  <div
-                    className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative"
-                    role="alert"
-                  >
-                    <strong className="font-bold">Ooops!</strong>
-                    <span className="block sm:inline ml-2">{errorMessage}</span>
-                  </div>
-                </div>
-              )}
+              {errorMessage && <Alert type="error" message={errorMessage} />}
               <div className="mb-4">
                 <label
-                  className="block text-gray-700 text-sm font-bold mb-1"
+                  className="block text-white-700 text-sm font-bold mb-1"
                   htmlFor="orderNumber"
                 >
                   Order number
@@ -94,7 +86,7 @@ const TrackModal: React.FC<TrackModalProps> = (props) => {
                 <input
                   id="orderNumber"
                   type="text"
-                  className="form-input w-full text-gray-700"
+                  className="form-input w-full text-white-700"
                   placeholder="Order number"
                   value={orderNumber}
                   onChange={(e) => setOrderNumber(e.target.value)}
@@ -115,7 +107,8 @@ const TrackModal: React.FC<TrackModalProps> = (props) => {
             </form>
             {orderStatus && (
               <div className="text-gray-400 text-center mt-6">
-                <h1 className="text-gray-400">{orderStatus}</h1>
+                {/* <h1 className="text-gray-400">{orderStatus}</h1> */}
+                <ProgressBar percentage={percentage} status={orderStatus} />
               </div>
             )}
           </div>

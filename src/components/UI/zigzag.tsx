@@ -44,14 +44,18 @@ export default function Zigzag() {
                 data-aos="fade-right"
               >
                 <div className="md:pr-4 lg:pr-12 xl:pr-16">
-                  <div className="font-architects-daughter text-xl text-purple-600 mb-2">
-                    More speed. Less spend
+                  <div className="font-architects-daughter text-xl text-blue-600 mb-2">
+                    Quick Fixes. Reliable Results.
                   </div>
-                  <h3 className="h3 mb-3">Keep projects on schedule</h3>
+                  <h3 className="h3 mb-3">We guarantee fast service</h3>
                   <p className="text-xl text-gray-400 mb-4">
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
-                    do eiusmod tempor incididunt ut labore et dolore magna
-                    aliqua.
+                    We guarantee that your device will be ready quickly; in
+                    fact, we often have devices ready the same day. With our
+                    professional team, most iPhone screen repairs are completed
+                    within 30 minutes. Our technicians have fixed over 30,000
+                    devices, including cracked screens, water damage, defective
+                    microphones and speakers, battery issues, and various
+                    software problems.
                   </p>
                   <ul className="text-lg text-gray-400 -mb-2">
                     <li className="flex items-center mb-2">
@@ -62,7 +66,7 @@ export default function Zigzag() {
                       >
                         <path d="M10.28 2.28L3.989 8.575 1.695 6.28A1 1 0 00.28 7.695l3 3a1 1 0 001.414 0l7-7A1 1 0 0010.28 2.28z" />
                       </svg>
-                      <span>Duis aute irure dolor in reprehenderit</span>
+                      <span>We ensure quick turnaround times</span>
                     </li>
                     <li className="flex items-center mb-2">
                       <svg
@@ -72,7 +76,7 @@ export default function Zigzag() {
                       >
                         <path d="M10.28 2.28L3.989 8.575 1.695 6.28A1 1 0 00.28 7.695l3 3a1 1 0 001.414 0l7-7A1 1 0 0010.28 2.28z" />
                       </svg>
-                      <span>Excepteur sint occaecat</span>
+                      <span>Quality service guaranteed</span>
                     </li>
                     <li className="flex items-center">
                       <svg
@@ -82,7 +86,7 @@ export default function Zigzag() {
                       >
                         <path d="M10.28 2.28L3.989 8.575 1.695 6.28A1 1 0 00.28 7.695l3 3a1 1 0 001.414 0l7-7A1 1 0 0010.28 2.28z" />
                       </svg>
-                      <span>Amet consectetur adipiscing elit</span>
+                      <span>Customer satisfaction is our priority</span>
                     </li>
                   </ul>
                 </div>
@@ -110,14 +114,17 @@ export default function Zigzag() {
                 data-aos="fade-left"
               >
                 <div className="md:pl-4 lg:pl-12 xl:pl-16">
-                  <div className="font-architects-daughter text-xl text-purple-600 mb-2">
-                    More speed. Less spend
+                  <div className="font-architects-daughter text-xl text-blue-600 mb-2">
+                    Innovative Solutions. Customer Focused
                   </div>
-                  <h3 className="h3 mb-3">Keep projects on schedule</h3>
+                  <h3 className="h3 mb-3">Satisfying Customers is Our Goal</h3>
                   <p className="text-xl text-gray-400 mb-4">
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
-                    do eiusmod tempor incididunt ut labore et dolore magna
-                    aliqua.
+                    We strive to satisfy customers, prioritizing quality over
+                    profit in every phone and computer repair. Our goal is to
+                    create a welcoming environment for our customers,
+                    continually adapting to meet their needs. Customers are not
+                    just clients; they are partners in our mission and vision to
+                    enhance our services.
                   </p>
                   <ul className="text-lg text-gray-400 -mb-2">
                     <li className="flex items-center mb-2">
@@ -128,7 +135,7 @@ export default function Zigzag() {
                       >
                         <path d="M10.28 2.28L3.989 8.575 1.695 6.28A1 1 0 00.28 7.695l3 3a1 1 0 001.414 0l7-7A1 1 0 0010.28 2.28z" />
                       </svg>
-                      <span>Duis aute irure dolor in reprehenderit</span>
+                      <span>We prioritize customer satisfaction</span>
                     </li>
                     <li className="flex items-center mb-2">
                       <svg
@@ -138,7 +145,7 @@ export default function Zigzag() {
                       >
                         <path d="M10.28 2.28L3.989 8.575 1.695 6.28A1 1 0 00.28 7.695l3 3a1 1 0 001.414 0l7-7A1 1 0 0010.28 2.28z" />
                       </svg>
-                      <span>Excepteur sint occaecat</span>
+                      <span>We focus on creating a welcoming environment</span>
                     </li>
                     <li className="flex items-center">
                       <svg
@@ -148,7 +155,9 @@ export default function Zigzag() {
                       >
                         <path d="M10.28 2.28L3.989 8.575 1.695 6.28A1 1 0 00.28 7.695l3 3a1 1 0 001.414 0l7-7A1 1 0 0010.28 2.28z" />
                       </svg>
-                      <span>Amet consectetur adipiscing elit</span>
+                      <span>
+                        We value customer partnership in our improvement efforts
+                      </span>
                     </li>
                   </ul>
                 </div>
@@ -176,14 +185,19 @@ export default function Zigzag() {
                 data-aos="fade-right"
               >
                 <div className="md:pr-4 lg:pr-12 xl:pr-16">
-                  <div className="font-architects-daughter text-xl text-purple-600 mb-2">
-                    More speed. Less spend
+                  <div className="font-architects-daughter text-xl text-blue-600 mb-2">
+                    Top Quality. Every Time
                   </div>
-                  <h3 className="h3 mb-3">Keep projects on schedule</h3>
+                  <h3 className="h3 mb-3">Leading the Industry in Repair</h3>
                   <p className="text-xl text-gray-400 mb-4">
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
-                    do eiusmod tempor incididunt ut labore et dolore magna
-                    aliqua.
+                    At TechFix, we aim to be the industry leader in cell phones
+                    and computers repair, known for reliability, affordability,
+                    and quality service. Our team excels at diagnosing and
+                    repairing electronic issues that others may overlook. That's
+                    why we confidently offer warranty and pricing guarantees,
+                    standing behind our same-day repair services. Whether it's
+                    an iPhone, Samsung, PC, or Mac, we ensure your device looks
+                    and functions like new.
                   </p>
                   <ul className="text-lg text-gray-400 -mb-2">
                     <li className="flex items-center mb-2">
@@ -194,7 +208,7 @@ export default function Zigzag() {
                       >
                         <path d="M10.28 2.28L3.989 8.575 1.695 6.28A1 1 0 00.28 7.695l3 3a1 1 0 001.414 0l7-7A1 1 0 0010.28 2.28z" />
                       </svg>
-                      <span>Duis aute irure dolor in reprehenderit</span>
+                      <span>We aim to lead in repair industry standards</span>
                     </li>
                     <li className="flex items-center mb-2">
                       <svg
@@ -204,7 +218,7 @@ export default function Zigzag() {
                       >
                         <path d="M10.28 2.28L3.989 8.575 1.695 6.28A1 1 0 00.28 7.695l3 3a1 1 0 001.414 0l7-7A1 1 0 0010.28 2.28z" />
                       </svg>
-                      <span>Excepteur sint occaecat</span>
+                      <span>We ensure reliability and affordability</span>
                     </li>
                     <li className="flex items-center">
                       <svg
@@ -214,7 +228,7 @@ export default function Zigzag() {
                       >
                         <path d="M10.28 2.28L3.989 8.575 1.695 6.28A1 1 0 00.28 7.695l3 3a1 1 0 001.414 0l7-7A1 1 0 0010.28 2.28z" />
                       </svg>
-                      <span>Amet consectetur adipiscing elit</span>
+                      <span>We stand by the quality of our repairs</span>
                     </li>
                   </ul>
                 </div>

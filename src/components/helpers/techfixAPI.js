@@ -1,6 +1,6 @@
 import axios from "axios";
-//const baseURL = process.env.REACT_APP_TECHFIX_API;
-const baseURL = "http://localhost:5127/techfix";
+const baseURL = process.env.REACT_APP_TECHFIX_API;
+//const baseURL = "http://localhost:5127/techfix";
 const TechFixAPI = axios.create({
   baseURL: baseURL,
   Header: {
