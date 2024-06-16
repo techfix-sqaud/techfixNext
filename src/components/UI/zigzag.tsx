@@ -16,8 +16,8 @@ export default function Zigzag() {
             </div>
             <h1 className="h2 mb-4">Tech Solutions Unbounded</h1>
             <p className="text-xl text-gray-400">
-              Excepteur sint occaecat cupidatat non proident, sunt in culpa qui
-              officia deserunt mollit laborum — semper quis lectus nulla.
+              Our skilled technicians handle every repair with precision and
+              care, ensuring your device functions flawlessly — CEO.
             </p>
           </div>
 
