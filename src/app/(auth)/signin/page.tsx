@@ -1,8 +1,17 @@
 "use client";
+import React, { useState, useEffect, FormEvent } from "react";
+import Alert from "@/components/helpers/Alert";
 import Link from "next/link";
-import React, { useState, useEffect } from "react";
-export default function SignIn() {
+import useLogin from "@/components/hooks/useLogin";
+
+const SignIn: React.FC = () => {
+  const { requestLogin, handleLogout } = useLogin();
   const [greeting, setGreeting] = useState<string>("");
+  const [email, setEmail] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
+  const [isPasswordVisible, setIsPasswordVisible] = useState<boolean>(false);
+  const [rememberMe, setRememberMe] = useState<boolean>(false);
+  const [errorMessage, setErrorMessage] = useState<string>("");
 
   useEffect(() => {
     function greet() {
@@ -21,11 +30,31 @@ export default function SignIn() {
         default:
           setGreeting("Good evening!");
       }
-
-      return greeting;
     }
+
     greet();
-  }, [greeting]);
+  }, []);
+
+  const handleTogglePasswordVisibility = () => {
+    setIsPasswordVisible(!isPasswordVisible);
+  };
+
+  const onSubmit = (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    requestLogin(email, password, rememberMe, setErrorMessage);
+  };
+
+  // useEffect(() => {
+  //   const rememberMeStored = window.localStorage.getItem("rememberMe");
+  //   const storedEmail = window.localStorage.getItem("email");
+
+  //   if (rememberMeStored) {
+  //     const emailWithoutQuotes = storedEmail?.replace(/"/g, "");
+  //     setEmail(emailWithoutQuotes || "");
+  //     setRememberMe(true);
+  //   }
+  // }, []);
+
   return (
     <section className="relative">
       <div className="max-w-6xl mx-auto px-4 sm:px-6">
@@ -34,40 +63,20 @@ export default function SignIn() {
             <h1 className="h1">{greeting}</h1>
           </div>
           <div className="max-w-sm mx-auto">
-            {/* <form>
-              <div className="flex flex-wrap -mx-3">
-                <div className="w-full px-3">
-                  <button className="btn px-0 text-white bg-red-600 hover:bg-red-700 w-full relative flex items-center">
-                    <svg
-                      className="w-4 h-4 fill-current text-white opacity-75 shrink-0 mx-4"
-                      viewBox="0 0 16 16"
-                      xmlns="http://www.w3.org/2000/svg"
-                    >
-                      <path d="M7.9 7v2.4H12c-.2 1-1.2 3-4 3-2.4 0-4.3-2-4.3-4.4 0-2.4 2-4.4 4.3-4.4 1.4 0 2.3.6 2.8 1.1l1.9-1.8C11.5 1.7 9.9 1 8 1 4.1 1 1 4.1 1 8s3.1 7 7 7c4 0 6.7-2.8 6.7-6.8 0-.5 0-.8-.1-1.2H7.9z" />
-                    </svg>
-                    <span
-                      className="h-6 flex items-center border-r border-white border-opacity-25 mr-4"
-                      aria-hidden="true"
-                    ></span>
-                    <span className="flex-auto pl-16 pr-8 -ml-16">
-                      Sign in with Google
-                    </span>
-                  </button>
-                </div>
-              </div>
-            </form> */}
             <div className="flex items-center my-6">
               <div
                 className="border-t border-gray-700 border-dotted grow mr-3"
                 aria-hidden="true"
               ></div>
-              <div className="text-gray-400">sign in with your email</div>
+
+              <div className="text-gray-400">Sign in with your email</div>
               <div
                 className="border-t border-gray-700 border-dotted grow ml-3"
                 aria-hidden="true"
               ></div>
             </div>
-            <form>
+            {errorMessage && <Alert type="error" message={errorMessage} />}
+            <form onSubmit={onSubmit}>
               <div className="flex flex-wrap -mx-3 mb-4">
                 <div className="w-full px-3">
                   <label
@@ -81,6 +90,8 @@ export default function SignIn() {
                     type="email"
                     className="form-input w-full text-gray-300"
                     placeholder="you@yourcompany.com"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
                     required
                   />
                 </div>
@@ -95,9 +106,11 @@ export default function SignIn() {
                   </label>
                   <input
                     id="password"
-                    type="password"
+                    type={isPasswordVisible ? "text" : "password"}
                     className="form-input w-full text-gray-300"
                     placeholder="Password (at least 10 characters)"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
                     required
                   />
                 </div>
@@ -106,10 +119,13 @@ export default function SignIn() {
                 <div className="w-full px-3">
                   <div className="flex justify-between">
                     <label className="flex items-center">
-                      <input type="checkbox" className="form-checkbox" />
-                      <span className="text-gray-400 ml-2">
-                        Remember me
-                      </span>
+                      <input
+                        type="checkbox"
+                        className="form-checkbox"
+                        checked={rememberMe}
+                        onChange={(e) => setRememberMe(e.target.checked)}
+                      />
+                      <span className="text-gray-400 ml-2">Remember me</span>
                     </label>
                     <Link
                       href="/reset-password"
@@ -122,7 +138,10 @@ export default function SignIn() {
               </div>
               <div className="flex flex-wrap -mx-3 mt-6">
                 <div className="w-full px-3">
-                  <button className="btn text-white bg-blue-600 hover:bg-gray-700 w-full">
+                  <button
+                    type="submit"
+                    className="btn text-white bg-blue-600 hover:bg-blue-700 w-full"
+                  >
                     Sign in
                   </button>
                 </div>
@@ -142,4 +161,6 @@ export default function SignIn() {
       </div>
     </section>
   );
-}
+};
+
+export default SignIn;

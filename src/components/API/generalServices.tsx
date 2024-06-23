@@ -11,7 +11,7 @@ export const _subscriber = async (email: any) => {
   }
 };
 export const sendConfirmationEmail = async (
-  email: string,
+  email: string | any,
   subject: string,
   message: string
 ) => {

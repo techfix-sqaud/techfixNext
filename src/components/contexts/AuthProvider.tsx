@@ -1,4 +1,8 @@
-export const initialState = {
+"use client"
+import { AuthAction, IUserProfile } from "./types/UserProfile";
+
+// Initial state definition
+export const initialState: IUserProfile = {
   isAuthenticated: false,
   userId: null,
   role: null,
@@ -9,11 +13,14 @@ export const initialState = {
   expires: null,
 };
 
-export const authReducer = (UserState, action) => {
+export const authReducer = (
+  state: IUserProfile,
+  action: AuthAction
+): IUserProfile => {
   switch (action.type) {
     case "LOGIN":
       return {
-        ...UserState,
+        ...state,
         isAuthenticated: true,
         userId: action.payload.userId,
         role: action.payload.role,
@@ -24,17 +31,8 @@ export const authReducer = (UserState, action) => {
         expires: action.payload.expires,
       };
     case "LOGOUT":
-      return {
-        isAuthenticated: false,
-        userId: null,
-        role: null,
-        profile: "",
-        firstName: "",
-        lastName: "",
-        token: "",
-        expires: null,
-      };
+      return initialState;
     default:
-      return UserState;
+      return state;
   }
 };
