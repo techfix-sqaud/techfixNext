@@ -1,14 +1,14 @@
+"use client";
 import axios from "axios";
 //const baseURL = process.env.REACT_APP_TECHFIX_API;
-const baseURL = "http://localhost:5127/techfix";
+
+const baseURL = "https://localhost:7032/techfix";
 const TechFixAPI = axios.create({
   baseURL: baseURL,
-  Header: {
-    Accept: "application/json",
-    "Access-Control-Allow-Origin": "*",
-    "content-Type": "application/json; charset=UTF-8",
-  },
-  Credentials: true,
+  // headers: {
+  //   Authorization: `Bearer ${token}`, // Corrected string interpolation
+  // },
+  withCredentials: true,
 });
 
 export default TechFixAPI;

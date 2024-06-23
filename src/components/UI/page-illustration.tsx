@@ -4,7 +4,7 @@ import { useTheme } from "../contexts/ThemProvider";
 
 export default function PageIllustration() {
   const { darkMode } = useTheme(); // Access the current theme
-  console.log("dark", darkMode);
+  //console.log("dark", darkMode);
 
   return (
     <div

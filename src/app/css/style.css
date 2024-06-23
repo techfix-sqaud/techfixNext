@@ -6,6 +6,7 @@
 @import 'additional-styles/range-slider.css';
 @import 'additional-styles/toggle-switch.css';
 @import 'additional-styles/theme.css';
+@import 'additional-styles/adminDashboard.css';
 
 @import 'tailwindcss/utilities';
 
@@ -28,3 +29,12 @@
     z-index: 10;
     margin-bottom: 30% /* Ensure it's above other elements if needed */
   }
+
+  .loading{
+    background-color: #1a202c;
+  }
+
+
+
+
+  

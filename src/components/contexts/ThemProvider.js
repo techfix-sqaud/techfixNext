@@ -1,5 +1,5 @@
 "use client";
-import { createContext, useContext, useState, useEffect } from "react";
+import React, { createContext, useContext, useState, useEffect } from "react";
 
 const ThemeContext = createContext();
 
@@ -7,11 +7,12 @@ export const ThemeProvider = ({ children }) => {
   const [darkMode, setDarkMode] = useState(false);
 
   useEffect(() => {
-    const theme = localStorage.getItem("theme");
-    if (
-      theme === "dark" ||
-      (!theme && window.matchMedia("(prefers-color-scheme: dark)").matches)
-    ) {
+    const theme = window.localStorage.getItem("theme");
+    const prefersDarkScheme = window.matchMedia(
+      "(prefers-color-scheme: Dark)"
+    ).matches;
+
+    if (theme === "dark" || (!theme && prefersDarkScheme)) {
       document.documentElement.classList.add("dark");
       setDarkMode(true);
     } else {
@@ -21,14 +22,10 @@ export const ThemeProvider = ({ children }) => {
   }, []);
 
   const toggleTheme = () => {
-    if (darkMode) {
-      document.documentElement.classList.remove("dark");
-      localStorage.setItem("theme", "light");
-    } else {
-      document.documentElement.classList.add("dark");
-      localStorage.setItem("theme", "dark");
-    }
-    setDarkMode(!darkMode);
+    const newMode = !darkMode;
+    localStorage.setItem("theme", newMode ? "dark" : "light");
+    setDarkMode(newMode);
+    document.documentElement.classList.toggle("dark", newMode);
   };
 
   return (
@@ -38,4 +35,7 @@ export const ThemeProvider = ({ children }) => {
   );
 };
 
-export const useTheme = () => useContext(ThemeContext);
+export const useTheme = () => {
+  const context = useContext(ThemeContext);
+  return context;
+};
