@@ -1,11 +1,12 @@
 "use client";
 import React, { useState, useEffect, FormEvent } from "react";
+import { FaEnvelope, FaEye, FaEyeSlash } from "react-icons/fa";
 import Alert from "@/components/helpers/Alert";
 import Link from "next/link";
 import useLogin from "@/components/hooks/useLogin";
 
 const SignIn: React.FC = () => {
-  const { requestLogin, handleLogout } = useLogin();
+  const { requestLogin } = useLogin();
   const [greeting, setGreeting] = useState<string>("");
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
@@ -44,17 +45,6 @@ const SignIn: React.FC = () => {
     requestLogin(email, password, rememberMe, setErrorMessage);
   };
 
-  // useEffect(() => {
-  //   const rememberMeStored = window.localStorage.getItem("rememberMe");
-  //   const storedEmail = window.localStorage.getItem("email");
-
-  //   if (rememberMeStored) {
-  //     const emailWithoutQuotes = storedEmail?.replace(/"/g, "");
-  //     setEmail(emailWithoutQuotes || "");
-  //     setRememberMe(true);
-  //   }
-  // }, []);
-
   return (
     <section className="relative">
       <div className="max-w-6xl mx-auto px-4 sm:px-6">
@@ -69,7 +59,7 @@ const SignIn: React.FC = () => {
                 aria-hidden="true"
               ></div>
 
-              <div className="text-gray-400">Sign in with your email</div>
+              <div className="black dark:white">Sign in with your email</div>
               <div
                 className="border-t border-gray-700 border-dotted grow ml-3"
                 aria-hidden="true"
@@ -80,39 +70,56 @@ const SignIn: React.FC = () => {
               <div className="flex flex-wrap -mx-3 mb-4">
                 <div className="w-full px-3">
                   <label
-                    className="block text-gray-300 text-sm font-medium mb-1"
+                    className="block black text-sm font-medium mb-1 dark:white"
                     htmlFor="email"
                   >
                     Email
                   </label>
-                  <input
-                    id="email"
-                    type="email"
-                    className="form-input w-full text-gray-300"
-                    placeholder="you@yourcompany.com"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    required
-                  />
+                  <div className="relative">
+                    <input
+                      id="email"
+                      type="email"
+                      className="form-input w-full black pr-10 dark:white"
+                      placeholder="you@yourcompany.com"
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                      required
+                    />
+                    <span className="absolute inset-y-0 right-0 flex items-center pr-3 cursor-pointer">
+                      <FaEnvelope className="text-gray-500" />
+                    </span>
+                  </div>
                 </div>
               </div>
               <div className="flex flex-wrap -mx-3 mb-4">
                 <div className="w-full px-3">
                   <label
-                    className="block text-gray-300 text-sm font-medium mb-1"
+                    className="block black text-sm font-medium mb-1 dark:white"
                     htmlFor="password"
                   >
                     Password
                   </label>
-                  <input
-                    id="password"
-                    type={isPasswordVisible ? "text" : "password"}
-                    className="form-input w-full text-gray-300"
-                    placeholder="Password (at least 10 characters)"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    required
-                  />
+                  <div className="relative">
+                    <input
+                      id="password"
+                      type={isPasswordVisible ? "text" : "password"}
+                      className="form-input w-full black pr-10 dark:white"
+                      placeholder="Password (at least 10 characters)"
+                      value={password}
+                      onChange={(e) => setPassword(e.target.value)}
+                      required
+                    />
+                    <span
+                      className="absolute inset-y-0 right-0 flex items-center pr-3 cursor-pointer"
+                      onClick={handleTogglePasswordVisibility}
+                    >
+                      {isPasswordVisible ? (
+                        <FaEyeSlash className="text-gray-500" />
+                      ) : (
+                        <FaEye className="text-gray-500" />
+                      )}
+                    </span>
+                  </div>
                 </div>
               </div>
               <div className="flex flex-wrap -mx-3 mb-4">
@@ -125,7 +132,7 @@ const SignIn: React.FC = () => {
                         checked={rememberMe}
                         onChange={(e) => setRememberMe(e.target.checked)}
                       />
-                      <span className="text-gray-400 ml-2">Remember me</span>
+                      <span className="black dark:white">Remember me</span>
                     </label>
                     <Link
                       href="/reset-password"
@@ -147,7 +154,7 @@ const SignIn: React.FC = () => {
                 </div>
               </div>
             </form>
-            <div className="text-gray-400 text-center mt-6">
+            <div className="black dark:white text-center mt-6">
               Don’t you have an account?{" "}
               <Link
                 href="/signup"

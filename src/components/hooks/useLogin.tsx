@@ -56,6 +56,11 @@ const useLogin = () => {
       } catch (error) {
         console.error("Error fetching user profile:", error);
       }
+    } else {
+      handleLogout();
+      toast.error("Your session has expired. Please log in again.", {
+        autoClose: false,
+      });
     }
     setLoading(false);
   };
