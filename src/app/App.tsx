@@ -116,12 +116,17 @@ const RootLayout: React.FC<RootLayoutProps> = ({ children }) => {
               </div>
             </div>
           ) : (
-            <div className="flex flex-col min-h-screen justify-center items-center">
-              <h1 className="text-2xl font-bold">
-                Please log in to access the application.
-              </h1>
-              {/* Add a login form or redirect link here */}
-            </div>
+            <>
+              <Banner />
+              <Header />
+              <ThemedContent>
+                <div className="flex flex-col min-h-screen overflow-hidden">
+                  {children}
+                  <BannerTheme />
+                </div>
+              </ThemedContent>
+              <Footer />
+            </>
           )}
         </ThemeProvider>
       </body>
