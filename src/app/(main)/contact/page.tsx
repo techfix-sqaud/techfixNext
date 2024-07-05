@@ -95,8 +95,10 @@ const ContactUs = () => {
                 ></iframe>
                 <div className="mt-4">
                   <h5 className="font-bold">Hours</h5>
-                  <div>M - F &nbsp; 10:00 AM - 5:00 PM</div>
-                  <div>Sat &nbsp; 12:00 AM - 4:00 PM</div>
+                  <div>M - T &nbsp; 12:00 AM - 7:00 PM</div>
+                  <div>Wed &nbsp; Closed</div>
+                  <div>TH - F &nbsp; 12:00 AM - 7:00 PM</div>
+                  <div>Sat &nbsp; 11:00 AM - 3:00 PM</div>
                   <div>Sun &nbsp; Closed</div>
                   <br />
                   <h5 className="font-bold">Customer Service</h5>

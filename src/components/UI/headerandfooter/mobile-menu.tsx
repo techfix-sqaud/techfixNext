@@ -13,7 +13,6 @@ export default function MobileMenu() {
   const [mobileNavOpen, setMobileNavOpen] = useState<boolean>(false);
   const [activeDropdown, setActiveDropdown] = useState<number | null>(null);
   const [dropdownOpen, setDropdownOpen] = useState<boolean>(false);
-
   const trigger = useRef<HTMLButtonElement>(null);
   const mobileNav = useRef<HTMLDivElement>(null);
 
@@ -23,7 +22,6 @@ export default function MobileMenu() {
     setDropdownOpen(true);
   };
 
-  // Close the mobile menu when a link is clicked
   const handleLinkClick = () => {
     setMobileNavOpen(false);
     setDropdownOpen(false);
@@ -107,7 +105,10 @@ export default function MobileMenu() {
         <ul className="bg-gray-800 px-4 py-2">
           {webLinks.map((link, index) => (
             <li key={index} className="relative group">
-              <div className="flex justify-between items-center">
+              <div
+                className="flex justify-between items-center"
+                onClick={() => toggleDropdown(index)}
+              >
                 <Link href={link.href} className="font-medium flex-grow py-2">
                   {link.title}
                 </Link>
@@ -135,6 +136,7 @@ export default function MobileMenu() {
                   {link.dropdown.map((dropdownLink, i) => (
                     <div
                       key={`dropdown-${index}-${i}`}
+                      onClick={() => handleLinkClick()}
                       className="flex justify-between items-center"
                     >
                       <Link

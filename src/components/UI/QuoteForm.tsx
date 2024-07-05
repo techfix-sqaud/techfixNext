@@ -1,13 +1,11 @@
 "use client";
 import React, { useRef, useState, FormEvent } from "react";
-//import { useRouter } from "next/router";
 import { toast } from "react-toastify";
 import TechFixAPI from "../helpers/techfixAPI";
 import HelperMethods from "../helpers/HelperMethods";
 import { sendConfirmationEmail } from "../API/generalServices";
 
 const Quotes: React.FC = () => {
-  //const router = useRouter();
   const nameRef = useRef<HTMLInputElement>(null);
   const emailRef = useRef<HTMLInputElement>(null);
   const [phoneNumber, setPhoneNumber] = useState<string>("");
@@ -87,7 +85,7 @@ const Quotes: React.FC = () => {
                 name="name"
                 ref={nameRef}
                 placeholder="Name"
-                className="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                className="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 text-black"
                 required
               />
             </div>
@@ -101,7 +99,7 @@ const Quotes: React.FC = () => {
                 name="email"
                 ref={emailRef}
                 placeholder="Email"
-                className="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                className="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 text-black"
                 required
               />
             </div>
@@ -121,7 +119,7 @@ const Quotes: React.FC = () => {
               id="phoneNumber"
               value={phoneNumber}
               placeholder="Phone Number"
-              className="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+              className="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 text-black"
               required
             />
             {phoneNumberErr && (
@@ -138,7 +136,7 @@ const Quotes: React.FC = () => {
               id="device"
               ref={deviceRef}
               placeholder="Please enter device model number"
-              className="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+              className="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 text-black"
               required
             />
           </div>
@@ -151,7 +149,7 @@ const Quotes: React.FC = () => {
               name="message"
               ref={descriptionRef}
               placeholder="Describe your problem"
-              className="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+              className="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 text-black"
               style={{ height: "100px" }}
               required
             />

@@ -35,7 +35,7 @@ header {
   }
   
   header nav ul li .font-medium {
-    color: white;
+    /* color: white; */
     padding: 12px 16px;
     transition: color 0.15s ease-in-out;
   }
@@ -80,10 +80,10 @@ header {
     transition: background-color 0.15s ease-in-out;
   }
   
-  header nav ul li ul li .block:hover {
+  header nav li .block:hover {
     /* background-color: gray;
     color: white; */
-    background-color: red;
+    /* background-color: red; */
     width: 100%
   }
   

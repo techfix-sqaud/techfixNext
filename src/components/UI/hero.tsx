@@ -1,3 +1,4 @@
+import Link from "next/link";
 import VideoThumb from "../../../public/images/hero-image-01.jpg";
 import SlideShow from "./SlideShow";
 import ModalVideo from "./modal-video";
@@ -25,20 +26,20 @@ export default function Hero() {
             </p>
             <div className="max-w-xs mx-auto sm:max-w-none sm:flex sm:justify-center">
               <div data-aos="fade-up" data-aos-delay="400">
-                <a
+                <Link
                   className="btn text-white bg-blue-600 hover:bg-gray-700 w-full mb-4 sm:w-auto sm:mb-0"
-                  href="#0"
+                  href="/contact"
                 >
                   Contact us
-                </a>
+                </Link>
               </div>
               <div data-aos="fade-up" data-aos-delay="600">
-                <a
+                <Link
                   className="btn text-white bg-gray-700 hover:bg-blue-800 w-full sm:w-auto sm:ml-4"
-                  href="#0"
+                  href="/quote"
                 >
                   Get quote
-                </a>
+                </Link>
               </div>
             </div>
           </div>
