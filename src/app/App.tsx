@@ -5,7 +5,7 @@ import Footer from "@/components/UI/headerandfooter/footer";
 import Banner from "@/components/UI/headerandfooter/topHeader";
 import BannerTheme from "@/components/UI/banner";
 import { Inter, Architects_Daughter } from "next/font/google";
-import "./css/style.css";
+//import "./css/style.css";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import LoadingOverlay from "@/components/UI/LoadingOverlay";
@@ -96,22 +96,26 @@ const RootLayout: React.FC<RootLayoutProps> = ({ children }) => {
               <Footer />
             </>
           ) : userProfile.isAuthenticated && userProfile.role === "ADMIN" ? (
-            <div className="flex h-screen">
+            <div className="flex h-screen overflow-hidden">
               <Sidebar
                 sidebarOpen={sidebarOpen}
                 setSidebarOpen={setSidebarOpen}
               />
-              <div className="flex-1 flex flex-col overflow-y-auto overflow-x-hidden">
+              <div className="relative flex flex-1 flex-col overflow-y-auto overflow-x-hidden">
                 {" "}
                 <TopHeaderAdmin
                   sidebarOpen={sidebarOpen}
                   setSidebarOpen={setSidebarOpen}
                 />
                 <ThemedContent>
+                  <main>
+
                   <div className="mx-auto max-w-screen-2xl p-4 md:p-6 2xl:p-10">
                     {children}
                     <BannerTheme />
                   </div>
+                  </main>
+
                 </ThemedContent>
               </div>
             </div>
