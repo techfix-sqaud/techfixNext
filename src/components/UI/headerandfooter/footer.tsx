@@ -117,7 +117,7 @@ export default function Footer() {
                 <ul>
                   <li className="mb-1">
                     <Link
-                      href="/"
+                      href="/techfix-education"
                       className="text-gray-400 hover:text-gray-100 transition duration-150 ease-in-out"
                     >
                       TechFix & Education
@@ -125,7 +125,7 @@ export default function Footer() {
                   </li>
                   <li className="mb-1">
                     <Link
-                      href="/"
+                      href="/techfix-business"
                       className="text-gray-400 hover:text-gray-100 transition duration-150 ease-in-out"
                     >
                       TechFix & Business
