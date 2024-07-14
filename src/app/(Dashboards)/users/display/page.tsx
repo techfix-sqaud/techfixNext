@@ -4,7 +4,7 @@ import CardTitle from "@/components/UI/cardTitle";
 import TableOne from "@/components/UI/Tables/TableOne";
 import React, { useContext } from "react";
 
-const page = () => {
+const Page = () => {
   const { userProfile } = useContext(AuthContext)!;
   return (
     <div className="flex justify-center">
@@ -21,4 +21,4 @@ const page = () => {
     </div>
   );
 };
-export default page;
+export default Page;

@@ -18,7 +18,7 @@ import HelperMethods from "@/components/helpers/HelperMethods";
 import Alert from "@/components/helpers/Alert";
 import Checkbox from "@/components/UI/techfixCheckbox";
 
-const addUser = () => {
+const AddUser = () => {
   const { userProfile } = useContext(AuthContext)!;
   const [selectedValue, setSelectedValue] = useState("CUSTOMER");
   const [userData, setUserData] = useState<UserData>();
@@ -382,4 +382,4 @@ const addUser = () => {
   );
 };
 
-export default addUser;
+export default AddUser;
