@@ -1,7 +1,5 @@
 import Link from "next/link";
-import VideoThumb from "../../../public/images/hero-image-01.jpg";
 import SlideShow from "./SlideShow";
-import ModalVideo from "./modal-video";
 
 export default function Hero() {
   return (

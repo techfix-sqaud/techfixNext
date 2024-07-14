@@ -1,5 +1,9 @@
 import { title } from "process";
-import { AiOutlineSetting, AiOutlineProduct } from "react-icons/ai";
+import {
+  AiOutlineSetting,
+  AiOutlineProduct,
+  AiOutlineUserAdd,
+} from "react-icons/ai";
 import {
   FaHome,
   FaServicestack,
@@ -7,8 +11,11 @@ import {
   FaEnvelope,
   FaSignInAlt,
   FaTachometerAlt,
+  FaSupple,
+  FaShoppingCart,
 } from "react-icons/fa";
-import { MdAccountBalance } from "react-icons/md";
+import { MdAccountBalance, MdReport } from "react-icons/md";
+import { TbReport } from "react-icons/tb";
 export const webLinks = [
   {
     title: "Home",
@@ -55,12 +62,41 @@ export const techfixAdmin = [
     icon: <FaTachometerAlt style={{ width: "30px", height: "30px" }} />,
   },
   {
+    label: "Suppliers",
+    route: "/pos",
+    icon: <FaSupple style={{ width: "30px", height: "30px" }} />,
+    children: [
+      { title: "Add supplier", href: "/services/web-development" },
+      { title: "Update supplier", href: "/services/seo" },
+      { title: "View supplier", href: "/services/seo" },
+    ],
+  },
+  {
     label: "Products",
     route: "#",
     icon: <AiOutlineProduct style={{ width: "30px", height: "30px" }} />,
-    dropdown: [
+    children: [
       { title: "Add products", href: "/services/web-development" },
       { title: "Bulk products", href: "/services/seo" },
+    ],
+  },
+  {
+    label: "Orders",
+    route: "#",
+    icon: <FaShoppingCart style={{ width: "30px", height: "30px" }} />,
+    children: [
+      { title: "Create", href: "/sales/orders/create" },
+      { title: "Update", href: "/services/seo" },
+    ],
+  },
+  {
+    label: "Users",
+    route: "#",
+    icon: <AiOutlineUserAdd style={{ width: "30px", height: "30px" }} />,
+    children: [
+      { title: "Add user", href: "/users/add" },
+      { title: "Update user", href: "/users/add" },
+      { title: "View", href: "/users/display" },
     ],
   },
   {
@@ -70,12 +106,49 @@ export const techfixAdmin = [
   },
   {
     label: "POS",
-    route: "/pos",
+    route: "/sales/pos",
     icon: <MdAccountBalance style={{ width: "30px", height: "30px" }} />,
   },
   {
-    label: "Sign in",
-    route: "/signin",
-    icon: <FaSignInAlt style={{ width: "30px", height: "30px" }} />,
+    label: "Accounting",
+    route: "#",
+    icon: <TbReport style={{ width: "30px", height: "30px" }} />,
+    children: [
+      { title: "Report", href: "/accounting/reports" },
+      { title: "Invoice", href: "/accounting/invoice" },
+    ],
+  },
+];
+
+export const techfixEmployee = [
+  {
+    label: "Products",
+    route: "#",
+    icon: <AiOutlineProduct style={{ width: "30px", height: "30px" }} />,
+  },
+  {
+    label: "Orders",
+    route: "/sales/orders/create",
+    icon: <FaShoppingCart style={{ width: "30px", height: "30px" }} />,
+  },
+  {
+    label: "Users",
+    route: "/users/add",
+    icon: <AiOutlineUserAdd style={{ width: "30px", height: "30px" }} />,
+  },
+  {
+    label: "Settings",
+    route: "/admin/settings",
+    icon: <AiOutlineSetting style={{ width: "30px", height: "30px" }} />,
+  },
+  {
+    label: "POS",
+    route: "/sales/pos",
+    icon: <MdAccountBalance style={{ width: "30px", height: "30px" }} />,
+  },
+  {
+    label: "Accounting",
+    route: "#",
+    icon: <TbReport style={{ width: "30px", height: "30px" }} />,
   },
 ];

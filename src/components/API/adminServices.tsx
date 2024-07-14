@@ -35,3 +35,28 @@ export const _getSalesByDate = async (
     console.error("Error fetching user data:", err);
   }
 };
+
+export const _salesTotal = async (startDate: Date, endDate: Date) => {
+  try {
+    const Sales = await TechFixAPI.get("sales/incomeByDateRange", {
+      params: {
+        startDate: startDate,
+        endDate: endDate,
+      },
+    });
+    return Sales;
+  } catch (err) {
+    console.error("Error fetching user data:", err);
+  }
+};
+
+export const _getSalesByBillNumber = async (billNumber: number) => {
+  try {
+    const InvoiceDetails = await TechFixAPI.get(
+      `sales/generateFormalInvoice/${billNumber}`
+    );
+    return InvoiceDetails;
+  } catch (err) {
+    console.error("Error fetching user data:", err);
+  }
+};

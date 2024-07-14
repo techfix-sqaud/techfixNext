@@ -53,15 +53,14 @@ const HelperMethods = {
     }
     return true; // Phone number is valid
   },
-  formateDate(d) {
+  formatDate(d) {
     if (!d) {
       return "";
     }
     const date = new Date(d);
     let dd = date.getDate();
-    let mm = date.getMonth();
+    let mm = date.getMonth() + 1;
     const yyyy = date.getFullYear();
-
     if (dd < 10) {
       dd = `0${dd}`;
     }
