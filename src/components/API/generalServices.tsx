@@ -1,3 +1,4 @@
+import { UserData } from "../contexts/types/UserData";
 import TechFixAPI from "../helpers/techfixAPI";
 
 export const _subscriber = async (email: any) => {
@@ -39,9 +40,46 @@ export const _getUserById = async (id: number | null) => {
 export const _getUsers = async () => {
   try {
     const users = await TechFixAPI.get("Users");
-    console.log("user", users);
     return users;
   } catch (error) {
     console.error("Error sending confirmation email:", error);
+  }
+};
+
+export const _createUser = async (
+  userData: UserData,
+  phoneNumber: string,
+  signature: boolean
+) => {
+  try {
+    const users = await TechFixAPI.post("Users/create", {
+      firstName: userData.firstName,
+      last_name: userData.last_name,
+      role: userData.role,
+      mobile: phoneNumber,
+      email: userData.email,
+      signature,
+    });
+    return users;
+  } catch (error) {
+    console.error("Error sending confirmation email:", error);
+  }
+};
+
+export const _getOrderById = async (id: number) => {
+  try {
+    const getOrderById = await TechFixAPI.get(`Order/${id}`);
+    return getOrderById;
+  } catch (err) {
+    console.error("Error fetching user data:", err);
+  }
+};
+
+export const _createOrder = async (data: any) => {
+  try {
+    const createOrder = await TechFixAPI.post("Order/create", data);
+    return createOrder;
+  } catch (err) {
+    console.error("Error fetching user data:", err);
   }
 };

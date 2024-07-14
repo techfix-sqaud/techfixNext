@@ -111,7 +111,7 @@ const useLogin = () => {
         router.push("/admin");
         break;
       case "EMPLOYEE":
-        router.push("/POS");
+        router.push("/sales/pos");
         break;
       default:
         router.push("/");

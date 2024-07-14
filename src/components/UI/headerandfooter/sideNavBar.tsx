@@ -13,21 +13,19 @@ interface SidebarProps {
 }
 const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
   const pathname = usePathname();
-  //const [pageName, setPageName] = useLocalStorage("selectedMenu", "dashboard");
 
   return (
     <ClickOutside onClick={() => setSidebarOpen(false)}>
       <aside
-        className={`absolute left-0 top-0 z-20 flex h-screen w-72.5 flex-col overflow-y-hidden loading duration-300 ease-linear dark:bg-boxdark lg:static lg:translate-x-0 ${
+        className={`absolute left-0 top-0 z-9999 flex h-screen w-72.5 flex-col overflow-y-hidden loading duration-300 ease-linear dark:bg-boxdark lg:static lg:translate-x-0 ${
           sidebarOpen ? "translate-x-0" : "-translate-x-full"
         }`}
       >
         <div className="flex items-center justify-between gap-2 px-6 py-5.5 lg:py-6.5">
           <Link href="/admin">
             <svg
+              className="w-[200px] h-[150px] sm:w-[250px] sm:h-[150px]"
               xmlns="http://www.w3.org/2000/svg"
-              width="250"
-              height="150"
               viewBox="0 0 607 264"
               version="1.1"
             >
@@ -72,14 +70,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
           <nav className="mt-5 px-4 py-4 lg:mt-9 lg:px-6">
             <ul className="mb-6 flex flex-col gap-1.5">
               {techfixAdmin.map((menuItem, menuIndex) => {
-                return (
-                  <SidebarItem
-                    key={menuIndex}
-                    item={menuItem}
-                    pageName={null}
-                    setPageName={null}
-                  />
-                );
+                return <SidebarItem key={menuIndex} item={menuItem} />;
               })}
             </ul>
           </nav>

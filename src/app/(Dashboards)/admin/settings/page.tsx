@@ -22,7 +22,6 @@ const Settings = () => {
     getUserFetch();
   }, [userProfile?.userId]);
 
-  console.log("user", userData);
   return (
     <div className="mx-auto max-w-screen-2xl p-4 md:p-6 2xl:p-10">
       <div className="mx-auto max-w-270">
@@ -121,7 +120,7 @@ const Settings = () => {
                           name="fullName"
                           id="fullName"
                           placeholder="Devid Jhon"
-                          defaultValue={userData?.last_Name}
+                          defaultValue={userData?.last_name}
                         />
                       </div>
                     </div>
@@ -165,7 +164,7 @@ const Settings = () => {
                         type="email"
                         name="emailAddress"
                         id="emailAddress"
-                        placeholder="devidjond45@gmail.com"
+                        placeholder="email@email.com"
                         defaultValue={userData?.email}
                       />
                     </div>
@@ -185,7 +184,7 @@ const Settings = () => {
                         type="text"
                         name="phoneNumber"
                         id="phoneNumber"
-                        placeholder="+990 3343 7865"
+                        placeholder="(000)-000-0000"
                         defaultValue={userData?.mobile ?? ""}
                       />
                     </div>

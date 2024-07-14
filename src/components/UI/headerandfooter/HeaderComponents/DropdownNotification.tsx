@@ -1,10 +1,15 @@
 import { useState } from "react";
 import Link from "next/link";
 import ClickOutside from "./DarkModeSwitcher";
+import Modal from "../../techfixModal";
 
 const DropdownNotification = () => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [notifying, setNotifying] = useState(true);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const openModal = () => setIsModalOpen(true);
+  const closeModal = () => setIsModalOpen(false);
 
   return (
     <ClickOutside onClick={() => setDropdownOpen(false)} className="relative">
@@ -39,7 +44,16 @@ const DropdownNotification = () => {
             />
           </svg>
         </Link>
+        <Modal isOpen={isModalOpen} onClose={closeModal} title="My Modal">
+          <p>This is the content of the modal.</p>
+        </Modal>
 
+        {/* <button
+          onClick={openModal}
+          className="bg-blue-500 text-white px-4 py-2 rounded"
+        >
+          Open Modal
+        </button> */}
         {dropdownOpen && (
           <div
             className={`absolute -right-27 mt-2.5 flex h-90 w-75 flex-col rounded-sm border border-stroke bg-white shadow-default  sm:right-0 sm:w-80`}

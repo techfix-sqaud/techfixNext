@@ -17,6 +17,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
   return (
     <html lang="en">
       <head>
+        {/* Google Analytics start */}
         <Script
           strategy="lazyOnload"
           src={`async src="https://www.googletagmanager.com/gtag/js?id=G-7CX0HWB9JS"`}
@@ -30,6 +31,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
             gtag('config', 'G-7CX0HWB9JS');
           `}
         </Script>
+        {/* Google Analytics End */}
       </head>
       <body>
         <AuthProvider>
