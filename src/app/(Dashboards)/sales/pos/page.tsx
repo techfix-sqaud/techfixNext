@@ -1,4 +1,4 @@
-import PosView from "@/components/UI/PosView";
+import PosView from "@/components/UI/POS/PosView";
 import React from "react";
 
 const page = () => {
