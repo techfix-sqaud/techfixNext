@@ -1,14 +1,16 @@
 "use client";
-import React, { useState, useEffect, useContext } from "react";
-import AuthContext from "../contexts/AuthContext";
-import TechFixAPI from "../helpers/techfixAPI";
+import React, { useState, useEffect, useContext, useRef } from "react";
+import AuthContext from "../../contexts/AuthContext";
+import TechFixAPI from "../../helpers/techfixAPI";
 import CategoryCard from "./PosItemCard";
 import Cart from "./PosCart";
-import ProductItemCard from "./productItemCard";
+import ProductItemCard from "../productItemCard";
 import { BsFilterLeft } from "react-icons/bs";
-import Modal from "./modal";
-import { discount, TAX_RATE } from "../helpers/Enums";
-import Dropdown from "./techfixDropdown";
+import Modal from "../modal";
+import { discount, TAX_RATE } from "../../helpers/Enums";
+import Dropdown from "../techfixDropdown";
+import { FaShoppingCart } from "react-icons/fa";
+import CartIcon from "./CratIcon";
 
 const Pos = () => {
   const currentDate = new Date();
@@ -16,38 +18,41 @@ const Pos = () => {
   const [items, setItems] = useState<any[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
   const [cart, setCart] = useState<any[]>([]);
-  const [showModal, setShowModal] = useState(false);
+  // const [showModal, setShowModal] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState<number>();
   const [productsItems, setProductsItems] = useState<any[]>([]);
   const [categoryId, setCategoryId] = useState<number>();
   const [listOfProducts, setListOfProducts] = useState<any[]>([]);
   const [shop, setShop] = useState<any>(null);
   const [errorMessage, setErrorMessage] = useState<string>("");
-  const [customItemErrorMessage, setCustomItemErrorMessage] =
-    useState<string>("");
-  const [errorMessageForList, setErrorMessageForList] = useState<string>("");
+  // const [customItemErrorMessage, setCustomItemErrorMessage] =
+  //   useState<string>("");
+  // const [errorMessageForList, setErrorMessageForList] = useState<string>("");
   const [serviceData, setServiceData] = useState<any[]>([]);
   const [showServices, setShowServices] = useState<boolean>(false);
   const [invoiceNumber, setInvoiceNumber] = useState(10000);
   const [subTotal, setSubTotal] = useState(0);
   const [totalInvoiceAmount, setTotalInvoiceAmount] = useState(0);
+  const cartRef = useRef<HTMLDivElement | null>(null);
   const [totalTaxAmount, setTotalTaxAmount] = useState(0);
   const [successMessageForList, setSuccessMessageForList] =
     useState<string>("");
   const [discountOption, setDiscountOption] = useState<any>(0);
   //const [discountPercentage, setDiscountPercentage] = useState<any>(0);
   const [discountAmount, setDiscountAmount] = useState<any>(0);
-  const [expandedItems, setExpandedItems] = useState<number | null>(null);
-  const [showCostModal, setShowCostModal] = useState<boolean>(false);
-  const [customProduct, setCustomProduct] = useState<string[]>([""]);
-  const [userEnteredCost, setUserEnteredCost] = useState<number[]>([0]);
-  const [userEnteredLabor, setUserEnteredLabor] = useState<number[]>([0]);
-  const [notes, setNotes] = useState<string[]>([""]);
-  const [isCustomItem, setIsCustomItem] = useState<boolean>(false);
-  const [successMessage, setSuccessMessage] = useState<string>("");
-  const [currentUser, setCurrentUser] = useState<{ firstName: string }>({
-    firstName: "",
-  });
+  // const [expandedItems, setExpandedItems] = useState<number | null>(null);
+  // const [showCostModal, setShowCostModal] = useState<boolean>(false);
+  // const [customProduct, setCustomProduct] = useState<string[]>([""]);
+  // const [userEnteredCost, setUserEnteredCost] = useState<number[]>([0]);
+  // const [userEnteredLabor, setUserEnteredLabor] = useState<number[]>([0]);
+  // const [notes, setNotes] = useState<string[]>([""]);
+  // const [isCustomItem, setIsCustomItem] = useState<boolean>(false);
+  // const [successMessage, setSuccessMessage] = useState<string>("");
+  const [isCartVisible, setIsCartVisible] = useState(false);
+  // const [currentUser, setCurrentUser] = useState<{ firstName: string }>({
+  //   firstName: "",
+  // });
+  const totalItemQuantity = cart.reduce((acc, item) => acc + item.quantity, 0);
   const discountPercentage = discount.map((pay) => ({
     label: `${pay.label}`, // Convert value to string if needed
     value: pay.value,
@@ -93,18 +98,38 @@ const Pos = () => {
       setCart(updatedCart);
     }
   };
-  const [modalOpen, setModalOpen] = useState(false);
-  const [modalContent, setModalContent] = useState("");
+  // const [modalOpen, setModalOpen] = useState(false);
+  // const [modalContent, setModalContent] = useState("");
 
-  const handleModalOpen = (content: string) => {
-    setModalContent(content);
-    setModalOpen(true);
+  const toggleCartVisibility = () => {
+    setIsCartVisible(!isCartVisible);
   };
 
-  const handleModalClose = () => {
-    setModalOpen(false);
-    setModalContent("");
+  const handleClickOutside = (event: MouseEvent) => {
+    if (cartRef.current && !cartRef.current.contains(event.target as Node)) {
+      setIsCartVisible(false);
+    }
   };
+  useEffect(() => {
+    if (isCartVisible) {
+      document.addEventListener("mousedown", handleClickOutside);
+    } else {
+      document.removeEventListener("mousedown", handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [isCartVisible]);
+  // const handleModalOpen = (content: string) => {
+  //   setModalContent(content);
+  //   setModalOpen(true);
+  // };
+
+  // const handleModalClose = () => {
+  //   setModalOpen(false);
+  //   setModalContent("");
+  // };
   const handleUpdateQuantity = (index: number, newQuantity: number) => {
     const updatedCart = [...cart];
     updatedCart[index].quantity = newQuantity;
@@ -303,8 +328,14 @@ const Pos = () => {
   };
 
   return (
-    <div className="flex">
-      <div className="w-2/3 p-4 overflow-x-auto">
+    // <div className="flex">
+    <div className="flex flex-col md:flex-row">
+      {/* <div className="w-2/3 p-4 overflow-x-auto"> */}
+      <div
+        className={`${
+          isCartVisible ? "w-full md:w-2/3" : "w-full"
+        } p-4 overflow-x-auto`}
+      >
         <div className="flex flex-nowrap gap-4">
           {items.map((item) => (
             <CategoryCard
@@ -370,24 +401,45 @@ const Pos = () => {
         {listOfProducts.length === 0 && <div>No items found </div>}
       </div>
       <div className="w-1/3 p-4">
-        <Cart
-          cart={cart}
-          handleIncreaseQuantity={handleIncreaseQuantity}
-          handleDecreaseQuantity={handleDecreaseQuantity}
-          handleUpdateQuantity={handleUpdateQuantity}
-          handleOnDelete={handleOnDelete}
-          subTotal={subTotal}
-          totalTaxAmount={totalTaxAmount}
-          totalInvoiceAmount={totalInvoiceAmount}
-          discountPercentage={discountAmount}
-          errorMessage={errorMessage}
-          successMessageForList={successMessageForList}
-          handleCheckout={handleCheckout}
-          clearCart={clearCart}
-          invoiceNumber={invoiceNumber}
-          UserState={userProfile}
-          shop={shop}
-        />
+        <div
+          className="fixed bottom-2 right-4 md:hidden"
+          onClick={toggleCartVisibility}
+        >
+          <button
+            onClick={toggleCartVisibility}
+            className="bg-slate-600 text-slate-50 rounded-full px-4 py-1 ml-2 flex items-center"
+          >
+            <CartIcon itemCount={totalItemQuantity} />
+          </button>
+        </div>
+
+        <div
+          className={`fixed inset-0 z-50 transition-transform transform ${
+            isCartVisible ? "translate-x-0" : "translate-x-full"
+          } md:translate-x-0`}
+          ref={cartRef}
+        >
+          <div className="w-screen md:w-1/3 p-4">
+            <Cart
+              cart={cart}
+              handleIncreaseQuantity={handleIncreaseQuantity}
+              handleDecreaseQuantity={handleDecreaseQuantity}
+              handleUpdateQuantity={handleUpdateQuantity}
+              handleOnDelete={handleOnDelete}
+              subTotal={subTotal}
+              totalTaxAmount={totalTaxAmount}
+              totalInvoiceAmount={totalInvoiceAmount}
+              discountPercentage={discountAmount}
+              errorMessage={errorMessage}
+              successMessageForList={successMessageForList}
+              handleCheckout={handleCheckout}
+              clearCart={clearCart}
+              invoiceNumber={invoiceNumber}
+              UserState={userProfile}
+              shop={shop}
+            />
+          </div>
+        </div>
       </div>
       {/* 
       <div className="flex justify-center items-center h-screen">

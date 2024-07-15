@@ -1,5 +1,5 @@
+import TechFixAPI from "@/components/helpers/techfixAPI";
 import React, { useState, useEffect } from "react";
-import TechFixAPI from "../helpers/techfixAPI";
 
 interface CategoryCardProps {
   id: number;
