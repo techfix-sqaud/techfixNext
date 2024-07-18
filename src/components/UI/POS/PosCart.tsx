@@ -1,9 +1,10 @@
 "use client";
-import React, { useRef } from "react";
+import React, { useEffect, useRef, useMemo } from "react";
 import { useReactToPrint } from "react-to-print";
 import Image from "next/image";
 import { BsFillTrashFill } from "react-icons/bs";
 import barcode from "../Assets/barcode.png";
+
 interface CartItem {
   id: number;
   productName: string;
@@ -99,6 +100,22 @@ const Cart: React.FC<CartProps> = ({
     `,
   });
 
+  const computedValues = useMemo(() => {
+    let subTotal = 0;
+    let totalTaxAmount = 0;
+    let totalInvoiceAmount = 0;
+
+    cart.forEach((item) => {
+      const itemTotal = (item.cost + item.labor) * item.quantity;
+      subTotal += itemTotal;
+      totalTaxAmount += itemTotal * 0.07;
+    });
+
+    totalInvoiceAmount = subTotal + totalTaxAmount;
+
+    return { subTotal, totalTaxAmount, totalInvoiceAmount };
+  }, [cart]);
+
   return (
     <div className="pointer-events-none fixed inset-y-0 right-0 flex max-w-full pl-10">
       <div className="pointer-events-auto w-screen max-w-md transform transition duration-500 ease-in-out data-[closed]:translate-x-full sm:duration-700">
@@ -190,14 +207,14 @@ const Cart: React.FC<CartProps> = ({
                 )}
                 <div className="flex justify-between text-base font-medium">
                   <p>Subtotal</p>
-                  <p>${subTotal.toFixed(2)}</p>
+                  <p>${computedValues.subTotal.toFixed(2)}</p>
                 </div>
                 <div className="flex justify-between text-base font-medium">
                   <p>Total</p>
-                  <p>${totalInvoiceAmount.toFixed(2)}</p>
+                  <p>${computedValues.totalInvoiceAmount.toFixed(2)}</p>
                 </div>
                 <p className="mt-0.5 text-sm text-gray-500">
-                  Tax: ${totalTaxAmount.toFixed(2)}
+                  Tax: ${computedValues.totalTaxAmount.toFixed(2)}
                 </p>
                 <p className="mt-0.5 text-sm text-gray-500">
                   Discount: {discountPercentage}%
