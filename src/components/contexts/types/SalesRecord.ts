@@ -15,7 +15,11 @@ export interface SalesRecord {
   tax: number;
   total: number;
   saleDate: string;
+  isExpanded: boolean;
 }
+
+
+
 
 export interface SalesItem {
   id: number;
