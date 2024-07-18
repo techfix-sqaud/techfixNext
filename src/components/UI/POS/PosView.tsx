@@ -1,5 +1,11 @@
 "use client";
-import React, { useState, useEffect, useContext, useRef } from "react";
+import React, {
+  useState,
+  useEffect,
+  useContext,
+  useRef,
+  useCallback,
+} from "react";
 import AuthContext from "../../contexts/AuthContext";
 import TechFixAPI from "../../helpers/techfixAPI";
 import CategoryCard from "./PosItemCard";
@@ -11,23 +17,20 @@ import { discount, TAX_RATE } from "../../helpers/Enums";
 import Dropdown from "../techfixDropdown";
 import { FaShoppingCart } from "react-icons/fa";
 import CartIcon from "./CratIcon";
+import { _getExistingBillNumber } from "@/components/API/adminServices";
 
 const Pos = () => {
   const currentDate = new Date();
   const { userProfile } = useContext(AuthContext)!;
-  const [items, setItems] = useState<any[]>([]);
+  const [categories, setCategories] = useState<any[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
   const [cart, setCart] = useState<any[]>([]);
-  // const [showModal, setShowModal] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState<number>();
   const [productsItems, setProductsItems] = useState<any[]>([]);
   const [categoryId, setCategoryId] = useState<number>();
   const [listOfProducts, setListOfProducts] = useState<any[]>([]);
   const [shop, setShop] = useState<any>(null);
   const [errorMessage, setErrorMessage] = useState<string>("");
-  // const [customItemErrorMessage, setCustomItemErrorMessage] =
-  //   useState<string>("");
-  // const [errorMessageForList, setErrorMessageForList] = useState<string>("");
   const [serviceData, setServiceData] = useState<any[]>([]);
   const [showServices, setShowServices] = useState<boolean>(false);
   const [invoiceNumber, setInvoiceNumber] = useState(10000);
@@ -38,25 +41,16 @@ const Pos = () => {
   const [successMessageForList, setSuccessMessageForList] =
     useState<string>("");
   const [discountOption, setDiscountOption] = useState<any>(0);
-  //const [discountPercentage, setDiscountPercentage] = useState<any>(0);
   const [discountAmount, setDiscountAmount] = useState<any>(0);
-  // const [expandedItems, setExpandedItems] = useState<number | null>(null);
-  // const [showCostModal, setShowCostModal] = useState<boolean>(false);
-  // const [customProduct, setCustomProduct] = useState<string[]>([""]);
-  // const [userEnteredCost, setUserEnteredCost] = useState<number[]>([0]);
-  // const [userEnteredLabor, setUserEnteredLabor] = useState<number[]>([0]);
-  // const [notes, setNotes] = useState<string[]>([""]);
-  // const [isCustomItem, setIsCustomItem] = useState<boolean>(false);
-  // const [successMessage, setSuccessMessage] = useState<string>("");
   const [isCartVisible, setIsCartVisible] = useState(false);
-  // const [currentUser, setCurrentUser] = useState<{ firstName: string }>({
-  //   firstName: "",
-  // });
-  const totalItemQuantity = cart.reduce((acc, item) => acc + item.quantity, 0);
+  const totalItemQuantity = React.useMemo(() => {
+    return cart.reduce((acc, item) => acc + item.quantity, 0);
+  }, [cart]);
   const discountPercentage = discount.map((pay) => ({
     label: `${pay.label}`, // Convert value to string if needed
     value: pay.value,
   }));
+
   useEffect(() => {
     getProducts();
     getShop();
@@ -98,8 +92,6 @@ const Pos = () => {
       setCart(updatedCart);
     }
   };
-  // const [modalOpen, setModalOpen] = useState(false);
-  // const [modalContent, setModalContent] = useState("");
 
   const toggleCartVisibility = () => {
     setIsCartVisible(!isCartVisible);
@@ -110,6 +102,7 @@ const Pos = () => {
       setIsCartVisible(false);
     }
   };
+
   useEffect(() => {
     if (isCartVisible) {
       document.addEventListener("mousedown", handleClickOutside);
@@ -121,15 +114,7 @@ const Pos = () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, [isCartVisible]);
-  // const handleModalOpen = (content: string) => {
-  //   setModalContent(content);
-  //   setModalOpen(true);
-  // };
 
-  // const handleModalClose = () => {
-  //   setModalOpen(false);
-  //   setModalContent("");
-  // };
   const handleUpdateQuantity = (index: number, newQuantity: number) => {
     const updatedCart = [...cart];
     updatedCart[index].quantity = newQuantity;
@@ -140,24 +125,24 @@ const Pos = () => {
     setCart([]);
   };
 
+  const getBillNumber = async () => {
+    try {
+      const data = await _getExistingBillNumber();
+      const nextInvoiceNumber = data + 1;
+      setInvoiceNumber(nextInvoiceNumber);
+    } catch (error) {
+      console.error("Error fetching invoice number:", error);
+    }
+  };
+
   useEffect(() => {
-    const getExistingBillNumber = async () => {
-      try {
-        const response = await TechFixAPI.get("/sales/invoiceNumber");
-        const maxInvoiceNumber = response.data.maxInvoiceNumber;
-        const nextInvoiceCounter = maxInvoiceNumber + 1;
-        setInvoiceNumber(nextInvoiceCounter);
-      } catch (error) {
-        console.error("Error fetching invoice number:", error);
-      }
-    };
     if (cart.length === 0) {
       setDiscountOption(0);
-      //setDiscountPercentage(0);
       setDiscountAmount(0);
     }
-    getExistingBillNumber();
-  }, [cart]);
+    calculateTotal();
+    getBillNumber();
+  }, [cart, discountOption]);
 
   const handleCheckout = async (PaymentMethod: string) => {
     try {
@@ -187,7 +172,6 @@ const Pos = () => {
       const salesResponse = await TechFixAPI.post("sales/create", salesRecord);
       if (salesResponse.status === 201) {
         setSuccessMessageForList("Checkout completed!");
-        calculateTotal();
         for (const cartItem of cart) {
           try {
             const updateQuantityResponse = await TechFixAPI.put(
@@ -212,7 +196,25 @@ const Pos = () => {
       localStorage.removeItem("cart");
     }
   };
-  const calculateTotal = () => {
+
+  // const calculateTotal = () => {
+  //   let subtotal = cart.reduce(
+  //     (acc: number, item: any) =>
+  //       acc + (item.cost + item.labor) * item.quantity,
+  //     0
+  //   );
+  //   subtotal -= subtotal * discountOption;
+
+  //   let taxTotal = subtotal * TAX_RATE;
+  //   let totalAmount = subtotal + taxTotal;
+  //   totalAmount = subtotal + taxTotal;
+  //   const calculatedDiscountAmount = subTotal * discountOption;
+  //   setDiscountAmount(calculatedDiscountAmount);
+  //   setTotalInvoiceAmount(totalAmount);
+  //   setTotalTaxAmount(taxTotal);
+  //   setSubTotal(subtotal);
+  // };
+  const calculateTotal = useCallback(() => {
     let subtotal = cart.reduce(
       (acc: number, item: any) =>
         acc + (item.cost + item.labor) * item.quantity,
@@ -228,29 +230,13 @@ const Pos = () => {
     setTotalInvoiceAmount(totalAmount);
     setTotalTaxAmount(taxTotal);
     setSubTotal(subtotal);
-  };
-  useEffect(() => {
-    let subTotal = 0;
-    let totalTaxAmount = 0;
-    let totalInvoiceAmount = 0;
-
-    cart.forEach((item) => {
-      const itemTotal = (item.cost + item.labor) * item.quantity;
-      subTotal += itemTotal;
-      totalTaxAmount += itemTotal * 0.07;
-    });
-
-    totalInvoiceAmount = subTotal + totalTaxAmount;
-    setSubTotal(subTotal);
-    setTotalTaxAmount(totalTaxAmount);
-    setTotalInvoiceAmount(totalInvoiceAmount);
-  }, [cart]);
+  }, [cart, discountOption]);
 
   const getProducts = async () => {
     setLoading(true);
     try {
       const response = await TechFixAPI.get("Category");
-      setItems(response.data);
+      setCategories(response.data);
     } catch (error) {
       console.error("Error fetching products:", error);
     } finally {
@@ -278,6 +264,7 @@ const Pos = () => {
       const result = await TechFixAPI.get(
         `Products/getproductbycategoriesid/${categoryId}`
       );
+
       setListOfProducts(result.data);
       setProductsItems(result.data);
     } catch (error) {
@@ -328,52 +315,48 @@ const Pos = () => {
   };
 
   return (
-    // <div className="flex">
-    <div className="flex flex-col md:flex-row">
-      {/* <div className="w-2/3 p-4 overflow-x-auto"> */}
-      <div
-        className={`${
-          isCartVisible ? "w-full md:w-2/3" : "w-full"
-        } p-4 overflow-x-auto`}
-      >
-        <div className="flex flex-nowrap gap-4">
-          {items.map((item) => (
-            <CategoryCard
-              key={item.id}
-              id={item.id}
-              title={item.title}
-              category={item.category}
-              selectedCategoryId={categoryId}
-              onCategoryClick={handleCategoryClick}
-            />
-          ))}
-        </div>
-        <div className="mt-4">
-          <div className="flex items-center space-x-2">
-            <div
-              className="flex items-center space-x-2"
-              onClick={() => setShowServices(!showServices)}
-            >
-              <BsFilterLeft />
-              <span>Filter by Service / type</span>
-            </div>
-            <div>
-              <input
-                className="w-full rounded border border-stroke bg-gray py-3 pl-1.5 pr-4.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
-                onChange={(e) => handleSearch(e.target.value)}
-                placeholder="Find item"
+    <div className="flex flex-col md:flex-row shadow-lg">
+      <div className={`p-4 ${!isCartVisible ? "w-full" : "w-full md:w-2/3"}`}>
+        <div className="overflow-x-auto mb-4">
+          <div className="flex flex-nowrap gap-4">
+            {categories.map((category) => (
+              <CategoryCard
+                key={category.id}
+                id={category.id}
+                title={category.title}
+                category={category.category}
+                selectedCategoryId={categoryId}
+                onCategoryClick={handleCategoryClick}
               />
-            </div>
-            <div>
-              <Dropdown
-                value={discountAmount}
-                onChange={(selectedValue: string) =>
-                  setDiscountAmount(selectedValue)
-                }
-                options={discountPercentage}
-                placeholder="Discount"
-                width="20"
-              />
+            ))}
+          </div>
+          <div className="mt-4">
+            <div className="flex items-center space-x-2">
+              <div
+                className="flex items-center space-x-2 cursor-pointer"
+                onClick={() => setShowServices(!showServices)}
+              >
+                <BsFilterLeft />
+                <span>Filter by Service / type</span>
+              </div>
+              <div>
+                <input
+                  className="w-full rounded border border-stroke bg-gray py-3 pl-1.5 pr-4.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
+                  onChange={(e) => handleSearch(e.target.value)}
+                  placeholder="Find item"
+                />
+              </div>
+              <div>
+                <Dropdown
+                  value={discountAmount}
+                  onChange={(selectedValue: string) =>
+                    setDiscountAmount(selectedValue)
+                  }
+                  options={discountPercentage}
+                  placeholder="Discount"
+                  width="20"
+                />
+              </div>
             </div>
           </div>
           {showServices && (
@@ -389,7 +372,7 @@ const Pos = () => {
             </ul>
           )}
         </div>
-        <div className="grid grid-cols-2 gap-4 mt-4">
+        <div className="grid grid-cols-2 gap-4 mt-4  lg:w-1/2">
           {listOfProducts.map((product) => (
             <ProductItemCard
               key={product.id}
@@ -398,9 +381,15 @@ const Pos = () => {
             />
           ))}
         </div>
-        {listOfProducts.length === 0 && <div>No items found </div>}
+
+        {listOfProducts.length === 0 && <div>No items found</div>}
       </div>
-      <div className="w-1/3 p-4">
+      <div
+        className={`${
+          isCartVisible ? "w-full md:w-1/3" : "hidden"
+        } md:block p-4`}
+      >
+        {/* Cart toggle button for mobile */}
         <div
           className="fixed bottom-2 right-4 md:hidden"
           onClick={toggleCartVisibility}
@@ -413,49 +402,31 @@ const Pos = () => {
           </button>
         </div>
 
+        {/* Cart container */}
         <div
-          className={`fixed inset-0 z-50 transition-transform transform ${
-            isCartVisible ? "translate-x-0" : "translate-x-full"
-          } md:translate-x-0`}
+          className={`${!isCartVisible ? "hidden" : ""} md:block`}
           ref={cartRef}
         >
-          <div className="w-screen md:w-1/3 p-4">
-            <Cart
-              cart={cart}
-              handleIncreaseQuantity={handleIncreaseQuantity}
-              handleDecreaseQuantity={handleDecreaseQuantity}
-              handleUpdateQuantity={handleUpdateQuantity}
-              handleOnDelete={handleOnDelete}
-              subTotal={subTotal}
-              totalTaxAmount={totalTaxAmount}
-              totalInvoiceAmount={totalInvoiceAmount}
-              discountPercentage={discountAmount}
-              errorMessage={errorMessage}
-              successMessageForList={successMessageForList}
-              handleCheckout={handleCheckout}
-              clearCart={clearCart}
-              invoiceNumber={invoiceNumber}
-              UserState={userProfile}
-              shop={shop}
-            />
-          </div>
+          <Cart
+            cart={cart}
+            handleIncreaseQuantity={handleIncreaseQuantity}
+            handleDecreaseQuantity={handleDecreaseQuantity}
+            handleUpdateQuantity={handleUpdateQuantity}
+            handleOnDelete={handleOnDelete}
+            subTotal={subTotal}
+            totalTaxAmount={totalTaxAmount}
+            totalInvoiceAmount={totalInvoiceAmount}
+            discountPercentage={discountAmount}
+            errorMessage={errorMessage}
+            successMessageForList={successMessageForList}
+            handleCheckout={handleCheckout}
+            clearCart={clearCart}
+            invoiceNumber={invoiceNumber}
+            UserState={userProfile}
+            shop={shop}
+          />
         </div>
       </div>
-      {/* 
-      <div className="flex justify-center items-center h-screen">
-        <button
-          onClick={() => handleModalOpen("This is the modal content.")}
-          className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600"
-        >
-          Open Modal
-        </button>
-
-        <Modal
-          open={modalOpen}
-          handleClose={handleModalClose}
-          contentToDisplay={modalContent}
-        />
-      </div> */}
     </div>
   );
 };

@@ -1,20 +1,33 @@
 export interface SalesRecord {
   id: number;
+  userId: number;
   billNumber: number;
-  salesItems: Array<{
-    id: number;
-    productName: string;
-    quantity: number;
-    unitPrice: number;
-    totalPrice: number;
-  }>;
-  isExpanded: boolean;
-  tax: number;
+  customerName?: string;
+  customerId?: number;
+  billingAddress?: string;
+  shippingAddress?: string;
+  paymentMethod?: string;
   status: string;
+  discount_percentage?: number;
+  discountAmount?: number;
   subtotal: number;
+  salesItems: SalesItem[];
+  tax: number;
   total: number;
   saleDate: string;
 }
+
+export interface SalesItem {
+  id: number;
+  sku?: string;
+  productName: string;
+  quantity: number;
+  unitPrice: number;
+  totalPrice: number;
+  includeTax: boolean;
+}
+
+
 
 export interface OrderData {
   userId: number | null;

@@ -1,3 +1,4 @@
+import { SalesRecord } from "../contexts/types/SalesRecord";
 import TechFixAPI from "../helpers/techfixAPI";
 
 export const _getCustomerCount = async () => {
@@ -58,5 +59,24 @@ export const _getSalesByBillNumber = async (billNumber: number) => {
     return InvoiceDetails;
   } catch (err) {
     console.error("Error fetching user data:", err);
+  }
+};
+
+export const _getExistingBillNumber = async () => {
+  try {
+    const response = await TechFixAPI.get("/sales/invoiceNumber");
+    return response.data.maxInvoiceNumber;
+  } catch (err) {
+    console.error("Error fetching user data:", err);
+  }
+};
+
+const createSales = async (salesRecord: any) => {
+  try {
+    const salesResponse = await TechFixAPI.post("sales/create", salesRecord);
+    return salesResponse.data; // Assuming you want to return data from the response
+  } catch (error) {
+    console.error("Error creating sales record:", error);
+    throw error; // Rethrow the error to handle it in the calling function if needed
   }
 };
