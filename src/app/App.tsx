@@ -15,6 +15,7 @@ import TopHeaderAdmin from "@/components/UI/headerandfooter/topHeaderAdmin";
 import UseLocalStorage from "@/components/hooks/useLocalStorage";
 import { ThemeProvider } from "@/components/contexts/ThemProvider";
 import EmployeeNav from "@/components/UI/headerandfooter/EmployeeNav";
+import { configartion } from "@/components/helpers/techfixAPI";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -62,6 +63,7 @@ const RootLayout: React.FC<RootLayoutProps> = ({ children }) => {
 
   useEffect(() => {
     if (token && expires) {
+      configartion(token);
       const expireDate = new Date(expires);
       if (expireDate > new Date()) {
         handleLogin(token, expireDate, false);
