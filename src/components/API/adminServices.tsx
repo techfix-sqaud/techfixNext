@@ -80,3 +80,30 @@ const createSales = async (salesRecord: any) => {
     throw error; // Rethrow the error to handle it in the calling function if needed
   }
 };
+
+export const _getOrders = async (data?: any) => {
+  try {
+    const getOrder = await TechFixAPI.get("Order");
+    return getOrder;
+  } catch (err) {
+    console.error("Error fetching user data:", err);
+  }
+};
+export const _getOrdersByOrderNumber = async (orderNumber: any) => {
+  try {
+    const params = parseInt(orderNumber);
+    const response = await TechFixAPI.get(
+      `Order/getOrderByOrderNumber/${params}`
+    );
+    return response.data;
+  } catch (err) {}
+};
+
+export const _deleteOrder = async (id: number) => {
+  try {
+    const response = await TechFixAPI.delete(`Order/delete/${id}`);
+    return response;
+  } catch (err) {
+    console.error("Error deleting order:", err);
+  }
+};

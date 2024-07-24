@@ -84,10 +84,7 @@ export const techfixAdmin = [
     label: "Orders",
     route: "#",
     icon: <FaShoppingCart style={{ width: "30px", height: "30px" }} />,
-    children: [
-      { title: "Create", href: "/sales/orders/create" },
-      { title: "Update", href: "/services/seo" },
-    ],
+    children: [{ title: "Create", href: "/sales/orders/create" }],
   },
   {
     label: "Users",

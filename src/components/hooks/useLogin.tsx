@@ -2,7 +2,7 @@
 import { useContext, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import AuthContext from "@/components/contexts/AuthContext";
-import TechFixAPI from "@/components/helpers/techfixAPI";
+import TechFixAPI, { configartion } from "@/components/helpers/techfixAPI";
 import { toast } from "react-toastify";
 import useLocalStorage from "./useLocalStorage";
 
@@ -28,10 +28,9 @@ const useLogin = () => {
     redirect: boolean
   ) => {
     if (token && expires) {
+      configartion(token);
       try {
-        const response = await TechFixAPI.get("/Users/profile", {
-          headers: { Authorization: `Bearer ${token}` },
-        });
+        const response = await TechFixAPI.get("/Users/profile");
         const user = response.data;
         setExpires(expires);
         dispatch({

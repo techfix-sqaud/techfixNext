@@ -16,10 +16,12 @@ import {
 import HelperMethods from "../helpers/HelperMethods";
 import CardTitle from "./cardTitle";
 import Alert from "../helpers/Alert";
+import { useParams } from "next/navigation";
+import { _getOrdersByOrderNumber } from "../API/adminServices";
 
 const CreateUpdateOrder = () => {
+  const id = useParams().id;
   const { userProfile } = useContext(AuthContext)!;
-  const [orderId, setOrderId] = useState<number | undefined>();
   const componentRef = useRef<HTMLDivElement | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
   const [customerData, setCustomerData] = useState<CustomerData | null>(null);
@@ -43,23 +45,25 @@ const CreateUpdateOrder = () => {
   const DisplayDate = orderDate.toLocaleDateString();
   const [numDevices, setNumDevices] = useState<number>(1);
   const [deviceLabels, setDeviceLabels] = useState<JSX.Element[]>([]);
-
+  console.log("order", id);
   const fetchData = async () => {
     try {
       setLoading(true);
-      //   if (orderIdParam) {
-      //     const res = await _getOrderById(parseInt(orderIdParam as string, 10));
-      //     console.log('res', res);
-      //   }
-      //   if (customerId) {
-      //     const response = await _getUserById(parseInt(customerId as string, 10));
-      //     setCustomerData(response?.data);
-      //   } else {
-      const customerResponse = await _getUsers();
-      const UserData = customerResponse?.data.filter(
-        (user: { role: string }) => user.role === "CUSTOMER"
-      );
-      setCustomer(UserData);
+      if (id) {
+        const res = await _getOrdersByOrderNumber(id);
+        console.log("res", res);
+        const customer = await _getUserById(res.userId);
+        setOrderNumber(res.orderNumber);
+        setDeviceModel(res.deviceModel);
+        setOrderDesciption(res.description);
+        setCustomerData(customer);
+      } else {
+        const customerResponse = await _getUsers();
+        const UserData = customerResponse?.data.filter(
+          (user: { role: string }) => user.role === "CUSTOMER"
+        );
+        setCustomer(UserData);
+      }
       //}
     } catch (error) {
       console.log("Error fetching data:", error);
@@ -79,7 +83,9 @@ const CreateUpdateOrder = () => {
         console.error("Error fetching invoice number:", error);
       }
     };
-    getExistingBillNumber();
+    {
+      !id && getExistingBillNumber();
+    }
     fetchData();
   }, []);
 
@@ -174,7 +180,7 @@ const CreateUpdateOrder = () => {
   return (
     <div className="mx-auto max-w-screen-2xl p-4 md:p-6 2xl:p-10">
       <div className="mx-auto max-w-270">
-        <CardTitle baseName="Orders" pageName={orderId ? "Update" : "Create"} />
+        <CardTitle baseName="Orders" pageName={id ? "Update" : "Create"} />
         <div className="p-6 rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark ">
           <div className="mainContent">
             {loading && <div>Loading...</div>}
@@ -184,7 +190,7 @@ const CreateUpdateOrder = () => {
               <div ref={componentRef} style={{ padding: "3%" }}>
                 <h4>Techfix</h4>
                 Order number: {orderNumber}
-                {showList && (
+                {showList && !id && (
                   <div className="w-full sm:w-1/2">
                     <label htmlFor="customer-select">Customer:</label>
                     <select
@@ -495,7 +501,7 @@ const CreateUpdateOrder = () => {
                 className="flex justify-center rounded bg-primary px-6 py-2 font-medium text-gray hover:bg-opacity-90"
                 onClick={() => handleCreateOrder()}
               >
-                {orderId ? `Create` : `Update`}
+                {!id ? `Create` : `Update`}
               </button>
             </div>
           </div>

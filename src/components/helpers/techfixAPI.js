@@ -7,4 +7,17 @@ const TechFixAPI = axios.create({
   withCredentials: true,
 });
 
+export const configartion = (token) => {
+  TechFixAPI.interceptors.request.use(
+    (config) => {
+      if (token) {
+        config.headers.Authorization = `Bearer ${token}`;
+      }
+      return config;
+    },
+    (error) => {
+      return Promise.reject(error);
+    }
+  );
+};
 export default TechFixAPI;
