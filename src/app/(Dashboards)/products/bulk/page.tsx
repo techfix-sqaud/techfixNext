@@ -1,7 +1,7 @@
 import React from "react";
 
-const Page = () => {
+const BulkProducts = () => {
   return <div>Bulk </div>;
 };
 
-export default Page;
+export default BulkProducts;
