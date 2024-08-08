@@ -41,11 +41,11 @@ const TechfixTable = ({
   const [selectedRows, setSelectedRows] = useState<number[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
 
-  const totalPages = Math.ceil(rows.length / pageSize);
+  const totalPages = Math.ceil(rows?.length / pageSize);
   const startIndex = (currentPage - 1) * pageSize;
-  const endIndex = Math.min(startIndex + pageSize, rows.length);
+  const endIndex = Math.min(startIndex + pageSize, rows?.length);
 
-  const paginatedRows = rows.slice(startIndex, endIndex);
+  const paginatedRows = rows?.slice(startIndex, endIndex);
 
   const handleEdit = (row: any) => {
     if (onEdit) {
@@ -125,6 +125,7 @@ const TechfixTable = ({
   );
 
   return (
+    //<div className="rounded-sm border border-stroke bg-white px-5 pb-2.5 pt-6 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-1">
     <div className="rounded-sm border border-stroke bg-white px-5 pb-2.5 pt-6 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-1">
       <div className="flex flex-col">
         <h4 className="mb-6 text-xl font-semibold text-black dark:text-white">
@@ -158,7 +159,7 @@ const TechfixTable = ({
               </tr>
             </thead>
             <tbody className="bg-white divide-y divide-gray-200 dark:bg-gray-900 dark:divide-gray-600">
-              {paginatedRows.map((row, index) => (
+              {paginatedRows?.map((row, index) => (
                 <tr key={row.id} className={getRowClassName(index)}>
                   {columns
                     ?.filter((column) => column !== "order_Status")

@@ -4,6 +4,8 @@ import { useReactToPrint } from "react-to-print";
 import Image from "next/image";
 import { BsFillTrashFill } from "react-icons/bs";
 import barcode from "../Assets/barcode.png";
+import PrintModal from "./PrintModal";
+import { TAX_RATE } from "@/components/helpers/Enums";
 
 interface CartItem {
   id: number;
@@ -20,11 +22,13 @@ interface CartProps {
   handleDecreaseQuantity: (index: number) => void;
   handleUpdateQuantity: (index: number, newQuantity: number) => void;
   handleOnDelete: (index: number) => void;
+  setPrintModalOpen: (open: boolean) => void;
   subTotal: number;
   totalTaxAmount: number;
   totalInvoiceAmount: number;
   discountPercentage: number;
   errorMessage: string;
+  handlePrintModel: boolean;
   successMessageForList: string;
   handleCheckout: (paymentMethod: string) => void;
   clearCart: () => void;
@@ -42,7 +46,9 @@ const Cart: React.FC<CartProps> = ({
   subTotal,
   totalTaxAmount,
   totalInvoiceAmount,
+  handlePrintModel,
   discountPercentage,
+  setPrintModalOpen,
   errorMessage,
   successMessageForList,
   handleCheckout,
@@ -98,7 +104,17 @@ const Cart: React.FC<CartProps> = ({
         }
       }
     `,
+    onAfterPrint: () => {
+      clearCart();
+    },
   });
+
+  useEffect(() => {
+    if (handlePrintModel) {
+      handlePrint();
+      setPrintModalOpen(false);
+    }
+  }, [handlePrintModel]);
 
   const computedValues = useMemo(() => {
     let subTotal = 0;
@@ -107,14 +123,14 @@ const Cart: React.FC<CartProps> = ({
 
     cart.forEach((item) => {
       const itemTotal = (item.cost + item.labor) * item.quantity;
-      subTotal += itemTotal;
-      totalTaxAmount += itemTotal * 0.07;
+      subTotal += itemTotal * (1 - discountPercentage / 100);
+      totalTaxAmount += subTotal * TAX_RATE;
     });
 
     totalInvoiceAmount = subTotal + totalTaxAmount;
 
     return { subTotal, totalTaxAmount, totalInvoiceAmount };
-  }, [cart]);
+  }, [cart, discountPercentage]);
 
   return (
     <div className="pointer-events-none fixed inset-y-0 right-0 flex max-w-full pl-10">
@@ -257,6 +273,7 @@ const Cart: React.FC<CartProps> = ({
               </button>
               <button
                 onClick={handlePrint}
+                disabled={cart.length === 0}
                 className="flex items-center justify-center rounded-md border border-transparent bg-indigo-600 px-6 py-3 text-base font-medium text-white shadow-sm hover:bg-indigo-700 col-span-2"
               >
                 Print

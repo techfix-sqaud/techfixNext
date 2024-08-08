@@ -5,6 +5,7 @@ import React, {
   useContext,
   useRef,
   useCallback,
+  use,
 } from "react";
 import AuthContext from "../../contexts/AuthContext";
 import TechFixAPI from "../../helpers/techfixAPI";
@@ -12,12 +13,16 @@ import CategoryCard from "./PosItemCard";
 import Cart from "./PosCart";
 import ProductItemCard from "../productItemCard";
 import { BsFilterLeft } from "react-icons/bs";
-import Modal from "../modal";
 import { discount, TAX_RATE } from "../../helpers/Enums";
 import Dropdown from "../techfixDropdown";
 import { FaShoppingCart } from "react-icons/fa";
 import CartIcon from "./CratIcon";
 import { _getExistingBillNumber } from "@/components/API/adminServices";
+import ChangeModal from "./ChangeModel";
+import PrintModal from "./PrintModal";
+import { toast } from "react-toastify";
+import useLocalStorage from "@/components/hooks/useLocalStorage";
+import AddCustomItemModal from "./AddCustomItemModal";
 
 const Pos = () => {
   const currentDate = new Date();
@@ -38,10 +43,19 @@ const Pos = () => {
   const [totalInvoiceAmount, setTotalInvoiceAmount] = useState(0);
   const cartRef = useRef<HTMLDivElement | null>(null);
   const [totalTaxAmount, setTotalTaxAmount] = useState(0);
+  const [isChangeModalOpen, setChangeModalOpen] = useState(false);
+  const [isCustomItemModalOpen, setIsCustomModalOpen] = useState(false);
+
+  const [isPrintModalOpen, setPrintModalOpen] = useState(false);
+  const [isPrint, setPrint] = useState(false);
+  const [paidAmount, setPaidAmount] = useState<number | null>(null);
+  const [changeAmount, setChangeAmount] = useState<number | null>(null);
+  const [cartStorage, setCartStorage] = useLocalStorage("cart", "");
+  const [displayAlert, setDisplayAlert] = useState<boolean>(true);
   const [successMessageForList, setSuccessMessageForList] =
     useState<string>("");
   const [discountOption, setDiscountOption] = useState<any>(0);
-  const [discountAmount, setDiscountAmount] = useState<any>(0);
+  const [discountAmount, setDiscountAmount] = useState<any>();
   const [isCartVisible, setIsCartVisible] = useState(false);
   const totalItemQuantity = React.useMemo(() => {
     return cart.reduce((acc, item) => acc + item.quantity, 0);
@@ -70,7 +84,7 @@ const Pos = () => {
       setCart((prevCart) => [...prevCart, newItem]);
     }
 
-    setSuccessMessageForList("Item added to cart!");
+    toast.success("Item added to cart!", { autoClose: 3000 });
   };
 
   const handleOnDelete = (index: number) => {
@@ -125,6 +139,10 @@ const Pos = () => {
     setCart([]);
   };
 
+  useEffect(() => {
+    setCartStorage(JSON.stringify(cart));
+  }, [cart]);
+
   const getBillNumber = async () => {
     try {
       const data = await _getExistingBillNumber();
@@ -147,7 +165,14 @@ const Pos = () => {
   const handleCheckout = async (PaymentMethod: string) => {
     try {
       if (cart.length === 0) {
-        setErrorMessage("The cart is empty. Cannot proceed with checkout.");
+        toast.error("The cart is empty. Cannot proceed with checkout.", {
+          autoClose: 3000,
+        });
+        return;
+      }
+      console.log("PaymentMethod", PaymentMethod);
+      if (PaymentMethod === "cash") {
+        setChangeModalOpen(true);
         return;
       }
       const salesRecord = {
@@ -171,7 +196,8 @@ const Pos = () => {
       };
       const salesResponse = await TechFixAPI.post("sales/create", salesRecord);
       if (salesResponse.status === 201) {
-        setSuccessMessageForList("Checkout completed!");
+        toast.success("Checkout completed!", { autoClose: 3000 });
+        setPrintModalOpen(true);
         for (const cartItem of cart) {
           try {
             const updateQuantityResponse = await TechFixAPI.put(
@@ -187,33 +213,27 @@ const Pos = () => {
           }
         }
       } else {
-        setErrorMessage("Failed to checkout sales.");
+        toast.error("Failed to checkout sales.", { autoClose: 3000 });
       }
     } catch (error) {
       console.log("Error during checkout:", error);
-    } finally {
-      setCart([]);
-      localStorage.removeItem("cart");
     }
   };
 
-  // const calculateTotal = () => {
-  //   let subtotal = cart.reduce(
-  //     (acc: number, item: any) =>
-  //       acc + (item.cost + item.labor) * item.quantity,
-  //     0
-  //   );
-  //   subtotal -= subtotal * discountOption;
+  const handleCompleteTransaction = () => {
+    setChangeModalOpen(true);
+  };
 
-  //   let taxTotal = subtotal * TAX_RATE;
-  //   let totalAmount = subtotal + taxTotal;
-  //   totalAmount = subtotal + taxTotal;
-  //   const calculatedDiscountAmount = subTotal * discountOption;
-  //   setDiscountAmount(calculatedDiscountAmount);
-  //   setTotalInvoiceAmount(totalAmount);
-  //   setTotalTaxAmount(taxTotal);
-  //   setSubTotal(subtotal);
-  // };
+  const handleCalculateChange = (amountPaid: number, change: number) => {
+    setPaidAmount(amountPaid);
+    setChangeAmount(change);
+  };
+  useEffect(() => {
+    const storedCart = cartStorage;
+    if (storedCart) {
+      setCart(JSON.parse(storedCart));
+    }
+  }, []);
   const calculateTotal = useCallback(() => {
     let subtotal = cart.reduce(
       (acc: number, item: any) =>
@@ -221,12 +241,9 @@ const Pos = () => {
       0
     );
     subtotal -= subtotal * discountOption;
-
     let taxTotal = subtotal * TAX_RATE;
     let totalAmount = subtotal + taxTotal;
     totalAmount = subtotal + taxTotal;
-    const calculatedDiscountAmount = subTotal * discountOption;
-    setDiscountAmount(calculatedDiscountAmount);
     setTotalInvoiceAmount(totalAmount);
     setTotalTaxAmount(taxTotal);
     setSubTotal(subtotal);
@@ -316,9 +333,10 @@ const Pos = () => {
 
   return (
     <div className="flex flex-col md:flex-row shadow-lg">
-      <div className={`p-4 ${!isCartVisible ? "w-full" : "w-full md:w-2/3"}`}>
-        <div className="overflow-x-auto mb-4">
-          <div className="flex flex-nowrap gap-4">
+      <div className="p-4 w-full md:w-2/3">
+        <div className=" mb-4">
+          <div className="overflow-x-auto flex flex-nowrap gap-4 pr-10">
+            {" "}
             {categories.map((category) => (
               <CategoryCard
                 key={category.id}
@@ -336,7 +354,7 @@ const Pos = () => {
                 className="flex items-center space-x-2 cursor-pointer"
                 onClick={() => setShowServices(!showServices)}
               >
-                <BsFilterLeft />
+                <BsFilterLeft style={{ width: "30px", height: "30px" }} />
                 <span>Filter by Service / type</span>
               </div>
               <div>
@@ -349,12 +367,14 @@ const Pos = () => {
               <div>
                 <Dropdown
                   value={discountAmount}
-                  onChange={(selectedValue: string) =>
-                    setDiscountAmount(selectedValue)
-                  }
+                  onChange={(selectedValue) => {
+                    const discountValue = parseInt(selectedValue, 10);
+                    setDiscountAmount(selectedValue);
+                    setDiscountOption(discountValue / 100); // Update discountOption as a decimal
+                  }}
                   options={discountPercentage}
                   placeholder="Discount"
-                  width="20"
+                  width="18"
                 />
               </div>
             </div>
@@ -372,7 +392,7 @@ const Pos = () => {
             </ul>
           )}
         </div>
-        <div className="grid grid-cols-2 gap-4 mt-4  lg:w-1/2">
+        <div className="grid grid-cols-2 gap-4 mt-4 lg:grid-cols-3 lg:w-3/4">
           {listOfProducts.map((product) => (
             <ProductItemCard
               key={product.id}
@@ -380,53 +400,81 @@ const Pos = () => {
               onAddToCart={handleAddToCart}
             />
           ))}
+          <div
+            className="flex items-center p-3 text-base font-bold text-gray-900 rounded-lg bg-gray-50 hover:bg-gray-100 group hover:shadow-md dark:bg-gray-600 dark:hover:bg-gray-500 dark:text-white h-16 md:h-auto"
+            onClick={() => setIsCustomModalOpen(true)}
+          >
+            <div className="flex-1 mr-3 truncate text-black dark:text-white">
+              Add custom item
+            </div>
+          </div>
         </div>
 
         {listOfProducts.length === 0 && <div>No items found</div>}
       </div>
+      {changeAmount}
+      {/* Cart container for web */}
       <div
         className={`${
-          isCartVisible ? "w-full md:w-1/3" : "hidden"
-        } md:block p-4`}
+          !isCartVisible ? "hidden " : "block p-4 w-full w-1/3"
+        }md:block p-4 w-full md:w-1/3`}
+        ref={cartRef}
       >
-        {/* Cart toggle button for mobile */}
-        <div
-          className="fixed bottom-2 right-4 md:hidden"
-          onClick={toggleCartVisibility}
-        >
-          <button
-            onClick={toggleCartVisibility}
-            className="bg-slate-600 text-slate-50 rounded-full px-4 py-1 ml-2 flex items-center"
-          >
-            <CartIcon itemCount={totalItemQuantity} />
-          </button>
-        </div>
-
-        {/* Cart container */}
-        <div
-          className={`${!isCartVisible ? "hidden" : ""} md:block`}
-          ref={cartRef}
-        >
-          <Cart
-            cart={cart}
-            handleIncreaseQuantity={handleIncreaseQuantity}
-            handleDecreaseQuantity={handleDecreaseQuantity}
-            handleUpdateQuantity={handleUpdateQuantity}
-            handleOnDelete={handleOnDelete}
-            subTotal={subTotal}
-            totalTaxAmount={totalTaxAmount}
-            totalInvoiceAmount={totalInvoiceAmount}
-            discountPercentage={discountAmount}
-            errorMessage={errorMessage}
-            successMessageForList={successMessageForList}
-            handleCheckout={handleCheckout}
-            clearCart={clearCart}
-            invoiceNumber={invoiceNumber}
-            UserState={userProfile}
-            shop={shop}
-          />
-        </div>
+        <Cart
+          cart={cart}
+          handleIncreaseQuantity={handleIncreaseQuantity}
+          handleDecreaseQuantity={handleDecreaseQuantity}
+          handleUpdateQuantity={handleUpdateQuantity}
+          handleOnDelete={handleOnDelete}
+          subTotal={subTotal}
+          totalTaxAmount={totalTaxAmount}
+          totalInvoiceAmount={totalInvoiceAmount}
+          discountPercentage={discountAmount}
+          errorMessage={errorMessage}
+          successMessageForList={successMessageForList}
+          handleCheckout={handleCheckout}
+          setPrintModalOpen={setPrintModalOpen}
+          clearCart={clearCart}
+          handlePrintModel={isPrint}
+          invoiceNumber={invoiceNumber}
+          UserState={userProfile}
+          shop={shop}
+        />
       </div>
+
+      {/* Cart toggle button for mobile */}
+      <div
+        className={`${
+          isCartVisible ? "hidden" : "fixed bottom-2 right-4 md:hidden"
+        }`}
+      >
+        <button
+          onClick={toggleCartVisibility}
+          className="bg-slate-600 text-slate-50 rounded-full px-4 py-1 ml-2 flex items-center"
+        >
+          <CartIcon itemCount={totalItemQuantity} />
+        </button>
+      </div>
+      {isChangeModalOpen && (
+        <ChangeModal
+          totalAmount={totalInvoiceAmount}
+          onClose={() => setChangeModalOpen(false)}
+          onCalculateChange={handleCalculateChange}
+        />
+      )}
+
+      {/* Print Receipt Modal */}
+      {isPrintModalOpen && (
+        <PrintModal
+          onPrintReceipt={() => setPrint(true)}
+          onClose={() => setPrintModalOpen(false)}
+        />
+      )}
+
+      {/* Custom item modal */}
+      {isCustomItemModalOpen && (
+        <AddCustomItemModal onClose={() => setIsCustomModalOpen(false)} />
+      )}
     </div>
   );
 };

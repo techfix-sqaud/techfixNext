@@ -3,11 +3,17 @@ import Image from "next/image";
 import DropdownNotification from "./HeaderComponents/DropdownNotification";
 import DropdownMessage from "./HeaderComponents/DropdownMessage";
 import DropdownUser from "./HeaderComponents/DropdownUser";
+import { useSearch } from "@/components/contexts/SearchContext";
 
 const TopHeaderAdmin = (props: {
   sidebarOpen: string | boolean | undefined;
   setSidebarOpen: (arg0: boolean) => void;
 }) => {
+  const { searchQuery, setSearchQuery } = useSearch();
+
+  const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchQuery(event.target.value);
+  };
   return (
     <header className="sticky top-0 z-999 flex w-full bg-white text-black drop-shadow-1 border-b border-gray-900 dark:bg-boxdark dark:drop-shadow-none dark:text-white">
       {/* <header className="sticky top-0 z-999 flex w-full bg-white drop-shadow-1 dark:bg-boxdark dark:drop-shadow-none"> */}
@@ -70,8 +76,10 @@ const TopHeaderAdmin = (props: {
 
               <input
                 type="text"
+                value={searchQuery}
+                onChange={handleSearchChange}
                 placeholder="Type to search..."
-                className="w-full bg-transparent pl-9 pr-4 font-medium focus:outline-none xl:w-125 text-black"
+                className="w-full bg-transparent pl-9 pr-4 font-medium focus:outline-none xl:w-125 text-black dark:text-white"
               />
             </div>
           </form>

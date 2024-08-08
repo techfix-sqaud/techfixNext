@@ -76,8 +76,9 @@ export const techfixAdmin = [
     route: "#",
     icon: <AiOutlineProduct style={{ width: "30px", height: "30px" }} />,
     children: [
-      { title: "Add products", href: "/services/web-development" },
-      { title: "Bulk products", href: "/services/seo" },
+      { title: "Add products", href: "/products/add" },
+      { title: "Bulk products", href: "/products/bulk" },
+      { title: "Products", href: "/products/view" },
     ],
   },
   {

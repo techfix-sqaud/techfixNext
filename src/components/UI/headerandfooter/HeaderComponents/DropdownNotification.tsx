@@ -1,15 +1,58 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import ClickOutside from "./DarkModeSwitcher";
-import Modal from "../../techfixModal";
+import { Quote } from "@/components/contexts/types/Messages";
+import {
+  _getQuotes,
+  _updateMessageStatus,
+  _updateQuoteStatus,
+} from "@/components/API/webServices";
+import { toast } from "react-toastify";
 
 const DropdownNotification = () => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [notifying, setNotifying] = useState(true);
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [unreadCount, setUnreadCount] = useState(0);
+  const [quotes, setQuotes] = useState<Quote[]>([]);
 
-  const openModal = () => setIsModalOpen(true);
-  const closeModal = () => setIsModalOpen(false);
+  useEffect(() => {
+    const fetchMessages = async () => {
+      const response = await _getQuotes();
+
+      const sortedMessages = response.sort((a: any, b: any) => {
+        if (a.status === "Received" && b.status !== "Received") return -1;
+        if (a.status !== "Received" && b.status === "Received") return 1;
+        return new Date(b.date).getTime() - new Date(a.date).getTime();
+      });
+      const unreadQuotes = response.filter(
+        (msg: Quote) => msg.status === "Received"
+      );
+      setQuotes(sortedMessages);
+      setUnreadCount(unreadQuotes.length);
+    };
+    fetchMessages();
+  }, []);
+
+  const handleView = async (id: number, email: string) => {
+    const quoteToUpdate = quotes.find((qu) => qu.id === id);
+    if (quoteToUpdate) {
+      if (quoteToUpdate.status === "Received") {
+        const updatedQuote = { ...quoteToUpdate, status: "Seen" };
+        const updated = await _updateQuoteStatus(updatedQuote.id);
+        if (updated) {
+          toast.success("Quote status updated successfully", {
+            autoClose: 3000,
+          });
+          setQuotes((prevQuote) =>
+            prevQuote.map((qu) =>
+              qu.id === id ? { ...qu, status: "Seen" } : qu
+            )
+          );
+        }
+      }
+      window.location.href = `mailto:${email}`;
+    }
+  };
 
   return (
     <ClickOutside onClick={() => setDropdownOpen(false)} className="relative">
@@ -23,11 +66,11 @@ const DropdownNotification = () => {
           className="relative flex h-8.5 w-8.5 items-center justify-center rounded-full border-[0.5px] border-stroke bg-gray hover:text-primary"
         >
           <span
-            className={`absolute -top-0.5 right-0 z-1 h-2 w-2 rounded-full bg-meta-1 ${
-              notifying === false ? "hidden" : "inline"
+            className={`absolute -right-0.5 -top-0.5 z-1 flex h-3 w-3 items-center justify-center rounded-full bg-meta-1 text-white text-xs ${
+              unreadCount > 0 ? "inline" : "hidden"
             }`}
           >
-            <span className="absolute -z-1 inline-flex h-full w-full animate-ping rounded-full bg-meta-1 opacity-75"></span>
+            {unreadCount}
           </span>
 
           <svg
@@ -44,90 +87,31 @@ const DropdownNotification = () => {
             />
           </svg>
         </Link>
-        <Modal isOpen={isModalOpen} onClose={closeModal} title="My Modal">
-          <p>This is the content of the modal.</p>
-        </Modal>
-
-        {/* <button
-          onClick={openModal}
-          className="bg-blue-500 text-white px-4 py-2 rounded"
-        >
-          Open Modal
-        </button> */}
         {dropdownOpen && (
           <div
-            className={`absolute -right-27 mt-2.5 flex h-90 w-75 flex-col rounded-sm border border-stroke bg-white shadow-default  sm:right-0 sm:w-80`}
+            className={`absolute -right-27 mt-2.5 flex h-90 w-75 flex-col rounded-sm border border-stroke bg-white shadow-default  dark:border-strokedark dark:bg-boxdark sm:right-0 sm:w-80`}
           >
             <div className="px-4.5 py-3">
-              <h5 className="text-sm font-medium text-bodydark2">
-                Notification
-              </h5>
+              <h5 className="text-sm font-medium text-bodydark2">Quotes</h5>
             </div>
 
             <ul className="flex h-auto flex-col overflow-y-auto">
-              <li>
-                <Link
-                  className="flex flex-col gap-2.5 border-t border-stroke px-4.5 py-3 hover:bg-gray-2 "
-                  href="#"
-                >
-                  <p className="text-sm">
-                    <span className="text-black ">
-                      Edit your information in a swipe
-                    </span>{" "}
-                    Sint occaecat cupidatat non proident, sunt in culpa qui
-                    officia deserunt mollit anim.
-                  </p>
-
-                  <p className="text-xs">12 May, 2025</p>
-                </Link>
-              </li>
-              <li>
-                <Link
-                  className="flex flex-col gap-2.5 border-t border-stroke px-4.5 py-3 hover:bg-gray-2"
-                  href="#"
-                >
-                  <p className="text-sm">
-                    <span className="text-black ">
-                      It is a long established fact
-                    </span>{" "}
-                    that a reader will be distracted by the readable.
-                  </p>
-
-                  <p className="text-xs">24 Feb, 2025</p>
-                </Link>
-              </li>
-              <li>
-                <Link
-                  className="flex flex-col gap-2.5 border-t border-stroke px-4.5 py-3 hover:bg-gray-2 "
-                  href="#"
-                >
-                  <p className="text-sm">
-                    <span className="text-black ">
-                      There are many variations
-                    </span>{" "}
-                    of passages of Lorem Ipsum available, but the majority have
-                    suffered
-                  </p>
-
-                  <p className="text-xs">04 Jan, 2025</p>
-                </Link>
-              </li>
-              <li>
-                <Link
-                  className="flex flex-col gap-2.5 border-t border-stroke px-4.5 py-3 hover:bg-gray-2 "
-                  href="#"
-                >
-                  <p className="text-sm">
-                    <span className="text-black ">
-                      There are many variations
-                    </span>{" "}
-                    of passages of Lorem Ipsum available, but the majority have
-                    suffered
-                  </p>
-
-                  <p className="text-xs">01 Dec, 2024</p>
-                </Link>
-              </li>
+              {quotes?.map((qu) => (
+                <li key={qu.id}>
+                  <div
+                    className="flex flex-col gap-2.5 border-t border-stroke px-4.5 py-3 hover:bg-gray-2"
+                    //href="#"
+                    onClick={() => handleView(qu.id, qu.email)}
+                  >
+                    <p className="text-sm">Name: {qu.fullName}</p>
+                    <p className="text-sm">Quote: {qu.description}</p>
+                    <p className="text-md">Device: {qu.deviceModel}</p>
+                    <p className="text-xs">Phone: {qu?.phoneNumber}</p>
+                    <p className="text-xs">Status: {qu?.status}</p>
+                    <p className="text-xs">Date: {qu?.date?.toString()}</p>
+                  </div>
+                </li>
+              ))}
             </ul>
           </div>
         )}

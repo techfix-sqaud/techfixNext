@@ -7,12 +7,14 @@ import ClickOutside from "./HeaderComponents/DarkModeSwitcher";
 import "../../../app/css/style.css";
 import SidebarItem from "@/components/helpers/SidebarItem";
 import { techfixAdmin } from "./menuItems";
+import DashboardBanner from "../DashboardBanner";
 interface SidebarProps {
   sidebarOpen: boolean;
   setSidebarOpen: (arg: boolean) => void;
 }
 const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
   const pathname = usePathname();
+  const versionNumber = "1.0.0";
 
   return (
     <ClickOutside onClick={() => setSidebarOpen(false)}>
@@ -75,6 +77,18 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
             </ul>
           </nav>
           {/* <!-- Sidebar Menu --> */}
+        </div>
+        <DashboardBanner />
+        <div className="flex justify-center items-center text-sky-400/100">
+          <a
+            // className="font-medium text-slate-50"
+            href="https://www.techfix-raleigh.com/"
+            target="_blank"
+            rel="noreferrer"
+          >
+            Powered by<span className="hidden sm:inline"> Techfix</span> V{" "}
+            {versionNumber}
+          </a>
         </div>
       </aside>
     </ClickOutside>

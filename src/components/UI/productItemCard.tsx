@@ -13,13 +13,17 @@ const ProductItemCard: React.FC<ProductItemCardProps> = ({
   const handleAddToCart = () => {
     onAddToCart(product);
   };
-
+  console.log(product);
   return (
     <div
       className="flex items-center p-3 text-base font-bold text-gray-900 rounded-lg bg-gray-50 hover:bg-gray-100 group hover:shadow-md dark:bg-gray-600 dark:hover:bg-gray-500 dark:text-white h-16 md:h-auto"
       onClick={handleAddToCart}
     >
-      <div className="flex-1 mr-3 truncate">{product.productName}</div>
+      <div className="flex-1 mr-3 whitespace-normal flex space-x-2">
+        <span>{product.productName}</span>
+        <span>{product.quality}</span>
+      </div>
+
       <div>{(product.cost + product.labor).toFixed(2)}</div>
     </div>
   );

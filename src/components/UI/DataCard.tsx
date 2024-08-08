@@ -49,7 +49,12 @@ const DataCard = () => {
   return (
     <div>
       <div className="grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-6 xl:grid-cols-4 2xl:gap-7.5">
-        <CardDataStats title="Monthly sales tax" total={salesTax} rate="0.43%" levelUp>
+        <CardDataStats
+          title="Monthly sales tax"
+          total={`$${salesTax}`}
+          rate="0.43%"
+          levelUp
+        >
           <svg
             className="fill-primary dark:fill-white"
             width="22"
@@ -70,7 +75,7 @@ const DataCard = () => {
         </CardDataStats>
         <CardDataStats
           title="Monthly Sales"
-          total={salesData}
+          total={`$${salesData}`}
           rate="4.35%"
           levelUp
         >
