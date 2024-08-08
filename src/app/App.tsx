@@ -16,6 +16,8 @@ import UseLocalStorage from "@/components/hooks/useLocalStorage";
 import { ThemeProvider } from "@/components/contexts/ThemProvider";
 import EmployeeNav from "@/components/UI/headerandfooter/EmployeeNav";
 import { configartion } from "@/components/helpers/techfixAPI";
+import DashboardBanner from "@/components/UI/DashboardBanner";
+import Script from "next/script";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -78,6 +80,23 @@ const RootLayout: React.FC<RootLayoutProps> = ({ children }) => {
 
   return (
     <html lang="en">
+      <head>
+        {/* Google Analytics start */}
+        <Script
+          strategy="lazyOnload"
+          src={`async src="https://www.googletagmanager.com/gtag/js?id=G-7CX0HWB9JS"`}
+        />
+
+        <Script id="" strategy="lazyOnload">
+          {`
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-7CX0HWB9JS');
+          `}
+        </Script>
+        {/* Google Analytics End */}
+      </head>
       <body
         className={`${inter.variable} ${architects_daughter.variable} font-inter antialiased tracking-tight`}
       >
@@ -117,15 +136,18 @@ const RootLayout: React.FC<RootLayoutProps> = ({ children }) => {
               </div>
             </div>
           ) : (
-            <div className="flex h-screen overflow-hidden">
-              <EmployeeNav />
-              <div className="relative flex flex-1 flex-col overflow-y-auto overflow-x-hidden bg-gray-100">
-                <ThemedContent>
-                  <div className="flex flex-col min-h-screen overflow-hidden bg-white dark:bg-gray-900 text-black dark:text-gray-200">
-                    {children}
-                    <BannerTheme />
-                  </div>
-                </ThemedContent>
+            <div>
+              <DashboardBanner />
+              <div className="flex h-screen overflow-hidden">
+                <EmployeeNav />
+                <div className="relative flex flex-1 flex-col overflow-y-auto overflow-x-hidden bg-gray-100">
+                  <ThemedContent>
+                    <div className="flex flex-col min-h-screen overflow-hidden bg-white dark:bg-gray-900 text-black dark:text-gray-200">
+                      {children}
+                      <BannerTheme />
+                    </div>
+                  </ThemedContent>
+                </div>
               </div>
             </div>
           )}

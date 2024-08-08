@@ -6,4 +6,6 @@ export interface Products{
     TotalPrice:number,
     UnitPrice:number
     SKU: any,
+    quantity: number,
+    quality: string,
 }
