@@ -2,8 +2,8 @@ import React from "react";
 import { NextPage } from "next";
 import { useRouter } from "next/router";
 
-const Page = () => {
+const AddProduct = () => {
   return <div>Add or update</div>;
 };
 
-export default Page;
+export default AddProduct;

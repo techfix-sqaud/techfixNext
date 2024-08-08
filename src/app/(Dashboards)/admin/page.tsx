@@ -14,9 +14,15 @@ import MessageCard from "@/components/UI/Messages";
 import { useSearch } from "@/components/contexts/SearchContext";
 import AdCard from "@/components/UI/AdCard";
 import ColumnChart from "@/components/UI/charts/ColumnChart";
-import CircularChart from "@/components/UI/charts/CircularChart";
 import Chart from "@/components/UI/charts/Chart";
+import dynamic from "next/dynamic";
 
+const CircularChart = dynamic(
+  () => import("@/components/UI/charts/CircularChart"),
+  {
+    ssr: false,
+  }
+);
 const Page = () => {
   const { searchQuery } = useSearch();
   const navigate = useRouter();
