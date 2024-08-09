@@ -36,6 +36,8 @@ const Pos = () => {
   const [listOfProducts, setListOfProducts] = useState<any[]>([]);
   const [shop, setShop] = useState<any>(null);
   const [errorMessage, setErrorMessage] = useState<string>("");
+  const [customItemErrorMessage, setCustomItemErrorMessage] =
+    useState<string>("");
   const [serviceData, setServiceData] = useState<any[]>([]);
   const [showServices, setShowServices] = useState<boolean>(false);
   const [invoiceNumber, setInvoiceNumber] = useState(10000);
@@ -45,7 +47,8 @@ const Pos = () => {
   const [totalTaxAmount, setTotalTaxAmount] = useState(0);
   const [isChangeModalOpen, setChangeModalOpen] = useState(false);
   const [isCustomItemModalOpen, setIsCustomModalOpen] = useState(false);
-
+  const [customProduct, setCustomProduct] = useState<string[]>([""]);
+  const [userEnteredCost, setUserEnteredCost] = useState<number>(0);
   const [isPrintModalOpen, setPrintModalOpen] = useState(false);
   const [isPrint, setPrint] = useState(false);
   const [paidAmount, setPaidAmount] = useState<number | null>(null);
@@ -261,6 +264,25 @@ const Pos = () => {
     }
   };
 
+  const handleAddUserEnteredItem = () => {
+    if (!customProduct || !userEnteredCost) {
+      setCustomItemErrorMessage("Please fill in all fields");
+      return;
+    }
+
+    const newItem = customProduct.map((productName: any) => ({
+      sku: "100070001",
+      productName,
+      cost: userEnteredCost,
+      labor: 0,
+      quantity: 1,
+      tax: 0,
+    }));
+    const updatedCart = [...cart, ...newItem];
+    setCart(updatedCart);
+    setIsCustomModalOpen(false);
+  };
+
   const fetchServices = async (categoryId: number) => {
     setLoading(true);
     try {
@@ -473,7 +495,13 @@ const Pos = () => {
 
       {/* Custom item modal */}
       {isCustomItemModalOpen && (
-        <AddCustomItemModal onClose={() => setIsCustomModalOpen(false)} />
+        <AddCustomItemModal
+          onClose={() => setIsCustomModalOpen(false)}
+          error={customItemErrorMessage}
+          setCustomProduct={setCustomProduct}
+          setUserEnteredCost={setUserEnteredCost}
+          addTocart={handleAddUserEnteredItem}
+        />
       )}
     </div>
   );

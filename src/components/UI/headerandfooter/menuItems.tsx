@@ -78,7 +78,7 @@ export const techfixAdmin = [
     children: [
       { title: "Add products", href: "/products/add" },
       { title: "Bulk products", href: "/products/bulk" },
-      { title: "Products", href: "/products/view" },
+      { title: "Products", href: "/products/products" },
     ],
   },
   {
@@ -121,7 +121,7 @@ export const techfixAdmin = [
 export const techfixEmployee = [
   {
     label: "Products",
-    route: "#",
+    route: "/products/products",
     icon: <AiOutlineProduct style={{ width: "30px", height: "30px" }} />,
   },
   {
@@ -146,7 +146,7 @@ export const techfixEmployee = [
   },
   {
     label: "Accounting",
-    route: "#",
+    route: "/accounting/reports",
     icon: <TbReport style={{ width: "30px", height: "30px" }} />,
   },
 ];

@@ -136,14 +136,21 @@ const RootLayout: React.FC<RootLayoutProps> = ({ children }) => {
               </div>
             </div>
           ) : (
-            <div>
-              <DashboardBanner />
+            <div className="relative flex flex-col min-h-screen">
+              {/* Banner at the top, stays fixed */}
+              {/* <div className="fixed top-0 left-0 right-0 z-20">
+                <Banner />
+              </div> */}
+
+              {/* Main content area, padding added to prevent overlap */}
               <div className="flex h-screen overflow-hidden">
+                {/* Adjusted for EmployeeNav */}
                 <EmployeeNav />
                 <div className="relative flex flex-1 flex-col overflow-y-auto overflow-x-hidden bg-gray-100">
                   <ThemedContent>
                     <div className="flex flex-col min-h-screen overflow-hidden bg-white dark:bg-gray-900 text-black dark:text-gray-200">
-                      {children}
+                      {/* Padding added to ensure content is not covered by the banner */}
+                      <div className="pt-4">{children}</div>
                       <BannerTheme />
                     </div>
                   </ThemedContent>
