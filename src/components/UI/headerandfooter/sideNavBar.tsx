@@ -8,13 +8,26 @@ import "../../../app/css/style.css";
 import SidebarItem from "@/components/helpers/SidebarItem";
 import { techfixAdmin } from "./menuItems";
 import DashboardBanner from "../DashboardBanner";
+import { _getVersion } from "@/components/API/generalServices";
 interface SidebarProps {
   sidebarOpen: boolean;
   setSidebarOpen: (arg: boolean) => void;
 }
 const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
   const pathname = usePathname();
-  const versionNumber = "1.0.0";
+
+  const [versionNumber, setVersion] = useState("1.0.0");
+
+  useEffect(() => {
+    const fetchVersion = async () => {
+      const res = await _getVersion();
+      if (res && res.labeledVersion) {
+        setVersion(res.labeledVersion); // Set the entire labeledVersion string
+      }
+    };
+
+    fetchVersion();
+  }, []);
 
   return (
     <ClickOutside onClick={() => setSidebarOpen(false)}>
