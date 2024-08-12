@@ -83,3 +83,12 @@ export const _createOrder = async (data: any) => {
     console.error("Error fetching user data:", err);
   }
 };
+
+export const _getVersion = async () => {
+  try {
+    const version = await TechFixAPI.get("Version");
+    return version.data;
+  } catch (error) {
+    console.error("Error fetching user data:", error);
+  }
+};
