@@ -68,7 +68,7 @@ export const techfixAdmin = [
     children: [
       { title: "Add supplier", href: "/services/web-development" },
       { title: "Update supplier", href: "/services/seo" },
-      { title: "View supplier", href: "/services/seo" },
+      { title: "View supplier", href: "/Suppliers/display" },
     ],
   },
   {
@@ -79,6 +79,8 @@ export const techfixAdmin = [
       { title: "Add products", href: "/products/add" },
       { title: "Bulk products", href: "/products/bulk" },
       { title: "Products", href: "/products/products" },
+      { title: "Categories", href: "/Categories/display" },
+      { title: "Services", href: "/products-services/display" },
     ],
   },
   {

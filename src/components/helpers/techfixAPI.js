@@ -12,6 +12,8 @@ export const configartion = (token) => {
     (config) => {
       if (token) {
         config.headers.Authorization = `Bearer ${token}`;
+      } else {
+        delete config.headers.Authorization;
       }
       return config;
     },
@@ -20,4 +22,10 @@ export const configartion = (token) => {
     }
   );
 };
+
+export const resetConfigartion = () => {
+  TechFixAPI.interceptors.request.clear();
+  TechFixAPI.interceptors.response.clear();
+};
+
 export default TechFixAPI;

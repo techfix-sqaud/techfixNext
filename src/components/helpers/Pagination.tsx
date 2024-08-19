@@ -57,19 +57,21 @@ const Pagination = ({
               <span className="sr-only">Previous</span>
               <IoIosArrowBack aria-hidden="true" className="h-5 w-5" />
             </button>
-            {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
-              <button
-                key={page}
-                onClick={() => onPageChange(page)}
-                className={`relative inline-flex items-center px-4 py-2 text-sm font-semibold ${
-                  page === currentPage
-                    ? "bg-indigo-600 text-white dark:text-white"
-                    : "text-gray-900 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 dark:text-white dark:hover:text-black"
-                }`}
-              >
-                {page}
-              </button>
-            ))}
+            {Array?.from({ length: totalPages }, (_, i) => i + 1).map(
+              (page) => (
+                <button
+                  key={page}
+                  onClick={() => onPageChange(page)}
+                  className={`relative inline-flex items-center px-4 py-2 text-sm font-semibold ${
+                    page === currentPage
+                      ? "bg-indigo-600 text-white dark:text-white"
+                      : "text-gray-900 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 dark:text-white dark:hover:text-black"
+                  }`}
+                >
+                  {page}
+                </button>
+              )
+            )}
             <button
               onClick={() => onPageChange(currentPage + 1)}
               disabled={currentPage === totalPages}

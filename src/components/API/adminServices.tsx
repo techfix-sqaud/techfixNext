@@ -107,3 +107,39 @@ export const _deleteOrder = async (id: number) => {
     console.error("Error deleting order:", err);
   }
 };
+
+export const _getProducts = async () => {
+  try {
+    const response = await TechFixAPI.get("/Products");
+    return response.data;
+  } catch (err) {
+    console.error("Error fetching product data:", err);
+  }
+};
+
+export const _getCategories = async () => {
+  try {
+    const response = await TechFixAPI.get("/Product_Category");
+    return response.data;
+  } catch (err) {
+    console.error("Error fetching product data:", err);
+  }
+};
+
+export const _getServices = async () => {
+  try {
+    const response = await TechFixAPI.get("/Service_List");
+    return response.data;
+  } catch (err) {
+    console.error("Error fetching product data:", err);
+  }
+};
+
+export const _getSuppliers = async () => {
+  try {
+    const response = await TechFixAPI.get("/Suppliers");
+    return response.data;
+  } catch (err) {
+    console.error("Error fetching product data:", err);
+  }
+};
