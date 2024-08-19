@@ -2,7 +2,10 @@
 import { useContext, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import AuthContext from "@/components/contexts/AuthContext";
-import TechFixAPI, { configartion } from "@/components/helpers/techfixAPI";
+import TechFixAPI, {
+  configartion,
+  resetConfigartion,
+} from "@/components/helpers/techfixAPI";
 import { toast } from "react-toastify";
 import useLocalStorage from "./useLocalStorage";
 
@@ -65,6 +68,7 @@ const useLogin = () => {
   };
 
   const handleLogout = () => {
+    resetConfigartion();
     dispatch({ type: "LOGOUT" });
     setToken("");
     setExpires(null);
