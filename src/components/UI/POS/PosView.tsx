@@ -173,11 +173,7 @@ const Pos = () => {
         });
         return;
       }
-      console.log("PaymentMethod", PaymentMethod);
-      if (PaymentMethod === "cash") {
-        setChangeModalOpen(true);
-        return;
-      }
+
       const salesRecord = {
         UserId: userProfile.userId,
         BillNumber: invoiceNumber,
@@ -199,7 +195,6 @@ const Pos = () => {
       };
       const salesResponse = await TechFixAPI.post("sales/create", salesRecord);
       if (salesResponse.status === 201) {
-        toast.success("Checkout completed!", { autoClose: 3000 });
         setPrintModalOpen(true);
         for (const cartItem of cart) {
           try {
@@ -213,6 +208,8 @@ const Pos = () => {
             }
           } catch (updateQuantityError) {
             console.error("Error updating quantity:", updateQuantityError);
+          } finally {
+            toast.success("Checkout completed!", { autoClose: 3000 });
           }
         }
       } else {
@@ -223,10 +220,14 @@ const Pos = () => {
     }
   };
 
-  const handleCompleteTransaction = () => {
-    setChangeModalOpen(true);
+  const handleCompleteTransaction = async () => {
+    await handleCheckout("cash");
+    setChangeModalOpen(false);
   };
 
+  const handleCashCheckout = () => {
+    setChangeModalOpen(true);
+  };
   const handleCalculateChange = (amountPaid: number, change: number) => {
     setPaidAmount(amountPaid);
     setChangeAmount(change);
@@ -352,7 +353,10 @@ const Pos = () => {
       setListOfProducts(productsItems);
     }
   };
-
+  const cancelPrint = () => {
+    setPrintModalOpen(false);
+    setCart([]);
+  };
   return (
     <div className="flex flex-col md:flex-row shadow-lg">
       <div className="p-4 w-full md:w-2/3">
@@ -448,14 +452,12 @@ const Pos = () => {
           handleDecreaseQuantity={handleDecreaseQuantity}
           handleUpdateQuantity={handleUpdateQuantity}
           handleOnDelete={handleOnDelete}
-          subTotal={subTotal}
-          totalTaxAmount={totalTaxAmount}
-          totalInvoiceAmount={totalInvoiceAmount}
           discountPercentage={discountAmount}
           errorMessage={errorMessage}
           successMessageForList={successMessageForList}
           handleCheckout={handleCheckout}
           setPrintModalOpen={setPrintModalOpen}
+          handleCashCheckout={handleCashCheckout}
           clearCart={clearCart}
           handlePrintModel={isPrint}
           invoiceNumber={invoiceNumber}
@@ -482,6 +484,7 @@ const Pos = () => {
           totalAmount={totalInvoiceAmount}
           onClose={() => setChangeModalOpen(false)}
           onCalculateChange={handleCalculateChange}
+          onDone={handleCompleteTransaction}
         />
       )}
 
@@ -489,7 +492,7 @@ const Pos = () => {
       {isPrintModalOpen && (
         <PrintModal
           onPrintReceipt={() => setPrint(true)}
-          onClose={() => setPrintModalOpen(false)}
+          onClose={() => cancelPrint()}
         />
       )}
 
