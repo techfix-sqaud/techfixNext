@@ -23,14 +23,12 @@ interface CartProps {
   handleUpdateQuantity: (index: number, newQuantity: number) => void;
   handleOnDelete: (index: number) => void;
   setPrintModalOpen: (open: boolean) => void;
-  subTotal: number;
-  totalTaxAmount: number;
-  totalInvoiceAmount: number;
   discountPercentage: number;
   errorMessage: string;
   handlePrintModel: boolean;
   successMessageForList: string;
   handleCheckout: (paymentMethod: string) => void;
+  handleCashCheckout: (paymentMethod: string) => void;
   clearCart: () => void;
   invoiceNumber: number;
   UserState: { firstName: string };
@@ -43,15 +41,13 @@ const Cart: React.FC<CartProps> = ({
   handleDecreaseQuantity,
   handleUpdateQuantity,
   handleOnDelete,
-  subTotal,
-  totalTaxAmount,
-  totalInvoiceAmount,
   handlePrintModel,
   discountPercentage,
   setPrintModalOpen,
   errorMessage,
   successMessageForList,
   handleCheckout,
+  handleCashCheckout,
   clearCart,
   invoiceNumber,
   UserState,
@@ -120,16 +116,17 @@ const Cart: React.FC<CartProps> = ({
     let subTotal = 0;
     let totalTaxAmount = 0;
     let totalInvoiceAmount = 0;
-
     cart.forEach((item) => {
       const itemTotal = (item.cost + item.labor) * item.quantity;
-      subTotal += itemTotal * (1 - discountPercentage / 100);
-      totalTaxAmount += subTotal * TAX_RATE;
+      subTotal += itemTotal;
     });
+    const discountedSubTotal = subTotal * (1 - discountPercentage / 100);
 
-    totalInvoiceAmount = subTotal + totalTaxAmount;
+    totalTaxAmount = discountedSubTotal * TAX_RATE;
 
-    return { subTotal, totalTaxAmount, totalInvoiceAmount };
+    totalInvoiceAmount = discountedSubTotal + totalTaxAmount;
+
+    return { subTotal: discountedSubTotal, totalTaxAmount, totalInvoiceAmount };
   }, [cart, discountPercentage]);
 
   return (
@@ -248,7 +245,7 @@ const Cart: React.FC<CartProps> = ({
           <div className="border-t border-gray-200 px-4 py-6 sm:px-6">
             <div className="mt-6 grid grid-cols-2 gap-4">
               <button
-                onClick={() => handleCheckout("cash")}
+                onClick={() => handleCashCheckout("cash")}
                 className="flex items-center justify-center rounded-md border border-transparent bg-indigo-600 px-6 py-3 text-base font-medium text-white shadow-sm hover:bg-indigo-700"
               >
                 Checkout Cash

@@ -4,12 +4,14 @@ import { useCallback, useEffect, useState } from "react";
 interface ChangeModalProps {
   totalAmount: number;
   onClose: () => void;
+  onDone: () => void;
   onCalculateChange: (amountPaid: number, change: number) => void;
 }
 
 const ChangeModal = ({
   totalAmount,
   onClose,
+  onDone,
   onCalculateChange,
 }: ChangeModalProps) => {
   const [amountPaid, setAmountPaid] = useState<number>(0);
@@ -80,8 +82,10 @@ const ChangeModal = ({
             error ? "border-danger" : ""
           }`}
         />
-        {error && <div className="text-danger text-sm my-2">{error}</div>}
-        <div className="flex justify-between my-4">
+        {error && (
+          <div className="text-danger text-sm my-2 col-span-2">{error}</div>
+        )}
+        <div className="flex justify-between my-4 col-span-2">
           {quickOptions.map((option) => (
             <button
               key={option}
@@ -92,15 +96,24 @@ const ChangeModal = ({
             </button>
           ))}
         </div>
-        <div className="text-lg font-bold text-gray-900 dark:text-gray-100 my-4">
+        <div className="text-lg font-bold text-gray-900 dark:text-gray-100 my-4 col-span-2">
           Change: {change >= 0 && change.toFixed(2)}
         </div>
-        <button
-          onClick={onClose}
-          className="flex items-center justify-center text-base font-medium text-white shadow-sm hover:bg-indigo-700 bg-indigo-600 border-transparent text-white p-2 rounded mr-2"
-        >
-          Close
-        </button>
+        <div className="mt-6 grid grid-cols-2 gap-4">
+          <button
+            onClick={onClose}
+            className="flex items-center justify-center text-base font-medium text-white shadow-sm hover:bg-indigo-700 bg-indigo-600 border-transparent text-white p-2 rounded mr-4"
+          >
+            Close
+          </button>
+
+          <button
+            onClick={onDone}
+            className="flex items-center justify-center text-base font-medium text-white shadow-sm hover:bg-indigo-700 bg-indigo-600 border-transparent text-white p-2 rounded"
+          >
+            Done
+          </button>
+        </div>
       </div>
     </div>
   );
