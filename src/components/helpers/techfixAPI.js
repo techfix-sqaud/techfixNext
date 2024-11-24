@@ -1,6 +1,6 @@
 import axios from "axios";
 //const baseURL = process.env.REACT_APP_TECHFIX_API;
-const baseURL = "https://lionfish-app-rfix7.ondigitalocean.app/techfix/";
+const baseURL = "https://www.techfixultra.com/techfix/";
 //const baseURL = "https://localhost:7032/techfix";
 //const baseURL = "http://localhost:5127/techfix";
 const TechFixAPI = axios.create({
